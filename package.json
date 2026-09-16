@@ -1,0 +1,25 @@
+{
+  "name": "omnimedix",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Omnimedix monorepo (Vue 3 + Hono + Neon)",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @omnimedix/api --filter @omnimedix/web dev",
+    "dev:api": "pnpm --filter @omnimedix/api dev",
+    "dev:web": "pnpm --filter @omnimedix/web dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "db:generate": "pnpm --filter @omnimedix/db db:generate",
+    "db:push": "pnpm --filter @omnimedix/db db:push",
+    "db:migrate": "pnpm --filter @omnimedix/db db:migrate",
+    "db:studio": "pnpm --filter @omnimedix/db db:studio",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.2",
+    "eslint": "^10.10.0",
+    "prettier": "^3.9.6",
+    "typescript": "^7.0.2"
+  }
+}
