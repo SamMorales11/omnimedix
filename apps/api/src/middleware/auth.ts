@@ -3,16 +3,16 @@ import type { Role } from "@omnimedix/shared";
 import { verifyToken } from "../lib/auth";
 import { UnauthorizedError } from "../lib/errors";
 
-export interface AuthUser {
+export interface AuthContextUser {
   id: string;
-  email: string;
-  name: string;
   role: Role;
+  name: string;
+  email: string;
 }
 
 export interface AppEnv {
   Variables: {
-    user?: AuthUser;
+    user: AuthContextUser;
   };
 }
 
@@ -21,24 +21,32 @@ export interface AppEnv {
  */
 export const requireAuth = createMiddleware<AppEnv>(async (c, next) => {
   const authHeader = c.req.header("Authorization");
+
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     throw new UnauthorizedError(
-      "Token otentikasi (Bearer token) tidak ditemukan.",
+      "Header Authorization Bearer token tidak ditemukan.",
+      "TOKEN_MISSING",
     );
   }
 
   const token = authHeader.substring(7).trim();
-  const payload = await verifyToken(token);
-
-  if (!payload) {
-    throw new UnauthorizedError("Token tidak valid atau sudah kedaluwarsa.");
+  if (!token) {
+    throw new UnauthorizedError("Token otentikasi kosong.", "TOKEN_EMPTY");
   }
 
-  const user: AuthUser = {
+  const payload = await verifyToken(token);
+  if (!payload) {
+    throw new UnauthorizedError(
+      "Token otentikasi tidak valid atau telah kedaluwarsa.",
+      "TOKEN_INVALID",
+    );
+  }
+
+  const user: AuthContextUser = {
     id: payload.sub,
-    email: payload.email,
-    name: payload.name,
     role: payload.role,
+    name: payload.name,
+    email: payload.email,
   };
 
   c.set("user", user);

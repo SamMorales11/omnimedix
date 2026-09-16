@@ -32,3 +32,4 @@ export * from "./lib/auth";
 export * from "./lib/errors";
 export * from "./middleware/auth";
 export * from "./middleware/rbac";
+export * from "./services/auth.service";

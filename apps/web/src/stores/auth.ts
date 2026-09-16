@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import type { User, Role } from "@omnimedix/shared";
+import type { Role } from "@omnimedix/shared";
 import { apiClient } from "../utils/api";
 
 export interface AuthStateUser {
@@ -12,7 +12,7 @@ export interface AuthStateUser {
 
 interface LoginResponse {
   success: boolean;
-  message: string;
+  message?: string;
   data: {
     token: string;
     user: AuthStateUser;
@@ -54,10 +54,11 @@ export const useAuthStore = defineStore("auth", () => {
       return false;
     } catch (err: unknown) {
       const fetchError = err as {
-        data?: { message?: string };
+        data?: { message?: string; error?: { message?: string } };
         message?: string;
       };
       error.value =
+        fetchError.data?.error?.message ||
         fetchError.data?.message ||
         fetchError.message ||
         "Login gagal. Cek kembali kredensial.";

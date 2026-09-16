@@ -1,75 +1,76 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { loginSchema, Role } from "@omnimedix/shared";
-import { eq } from "drizzle-orm";
-import { db } from "../lib/db";
-import { users } from "@omnimedix/db";
-import { comparePassword, createToken } from "../lib/auth";
+import { loginSchema } from "@omnimedix/shared";
+import { authService } from "../services/auth.service";
 import { requireAuth, type AppEnv } from "../middleware/auth";
-import { UnauthorizedError } from "../lib/errors";
 
 export const authRoutes = new Hono<AppEnv>()
-  .post("/login", zValidator("json", loginSchema), async (c) => {
-    const { email, password } = c.req.valid("json");
-
-    let user = null;
-    try {
-      const found = await db
-        .select()
-        .from(users)
-        .where(eq(users.email, email))
-        .limit(1);
-      user = found[0] ?? null;
-    } catch {
-      // In case DB is not yet populated or offline
-    }
-
-    if (user) {
-      if (!user.isActive) {
-        throw new UnauthorizedError(
-          "Akun dinonaktifkan. Silakan hubungi administrator.",
+  /**
+   * POST /auth/login
+   * Public endpoint to authenticate users with email & password
+   */
+  .post(
+    "/login",
+    zValidator("json", loginSchema, (result, c) => {
+      if (!result.success) {
+        return c.json(
+          {
+            success: false,
+            error: {
+              code: "VALIDATION_ERROR",
+              message: "Data input tidak valid.",
+              details: result.error.flatten(),
+            },
+          },
+          400,
         );
       }
+    }),
+    async (c) => {
+      const { email, password } = c.req.valid("json");
+      const result = await authService.login(email, password);
 
-      const isPasswordValid = await comparePassword(
-        password,
-        user.passwordHash,
-      );
-      if (!isPasswordValid) {
-        throw new UnauthorizedError("Email atau password salah.");
-      }
-
-      const token = await createToken({
-        sub: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role as Role,
-      });
-
-      return c.json({
-        success: true,
-        message: "Login berhasil.",
-        data: {
-          token,
-          user: {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            role: user.role,
-          },
+      return c.json(
+        {
+          success: true,
+          message: "Login berhasil.",
+          data: result,
         },
-      });
-    }
+        200,
+      );
+    },
+  )
 
-    throw new UnauthorizedError("Email atau password tidak valid.");
-  })
-  .get("/me", requireAuth, (c) => {
-    const currentUser = c.get("user");
+  /**
+   * GET /auth/me
+   * Protected endpoint to get current authenticated user profile
+   */
+  .get("/me", requireAuth, async (c) => {
+    const authContext = c.get("user");
+    const userProfile = await authService.getMe(authContext.id);
 
-    return c.json({
-      success: true,
-      data: {
-        user: currentUser,
+    return c.json(
+      {
+        success: true,
+        data: {
+          user: userProfile,
+        },
       },
-    });
+      200,
+    );
+  })
+
+  /**
+   * POST /auth/logout
+   * Client-side session clear confirmation
+   */
+  .post("/logout", (c) => {
+    return c.json(
+      {
+        success: true,
+        message: "Logout berhasil. Sesi telah diakhiri.",
+        data: null,
+      },
+      200,
+    );
   });

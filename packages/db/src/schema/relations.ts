@@ -15,7 +15,6 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     fields: [users.id],
     references: [doctors.userId],
   }),
-  stockMovements: many(stockMovements),
   auditLogs: many(auditLogs),
 }));
 
@@ -73,13 +72,13 @@ export const prescriptionsRelations = relations(
       fields: [prescriptions.queueId],
       references: [queues.id],
     }),
-    patient: one(patients, {
-      fields: [prescriptions.patientId],
-      references: [patients.id],
-    }),
     doctor: one(doctors, {
       fields: [prescriptions.doctorId],
       references: [doctors.id],
+    }),
+    patient: one(patients, {
+      fields: [prescriptions.patientId],
+      references: [patients.id],
     }),
     items: many(prescriptionItems),
   }),
@@ -103,10 +102,6 @@ export const stockMovementsRelations = relations(stockMovements, ({ one }) => ({
   medicine: one(medicines, {
     fields: [stockMovements.medicineId],
     references: [medicines.id],
-  }),
-  createdByUser: one(users, {
-    fields: [stockMovements.createdBy],
-    references: [users.id],
   }),
 }));
 

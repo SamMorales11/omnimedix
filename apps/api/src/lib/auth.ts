@@ -1,36 +1,37 @@
 import bcrypt from "bcryptjs";
-import { SignJWT, jwtVerify, type JWTPayload } from "jose";
+import { SignJWT, jwtVerify } from "jose";
 import type { Role } from "@omnimedix/shared";
 
-const SALT_ROUNDS = 10;
+const BCRYPT_SALT_ROUNDS = 12;
 const DEFAULT_JWT_EXPIRES_IN = "24h";
 
-export interface AuthTokenPayload {
-  sub: string;
-  email: string;
-  name: string;
+export interface JwtTokenPayload {
+  sub: string; // userId (UUID)
   role: Role;
+  name: string;
+  email: string;
   iat?: number;
   exp?: number;
 }
 
 function getJwtSecretKey(): Uint8Array {
   const secret =
-    process.env["JWT_SECRET"] || "omnimedix-super-secret-jwt-key-2026";
+    process.env["JWT_SECRET"] ||
+    "omnimedix-super-secret-jwt-key-2026-secure-clinical-portal";
   return new TextEncoder().encode(secret);
 }
 
 /**
- * Hash raw password using bcryptjs
+ * Hash raw password using bcryptjs with cost factor 12
  */
 export async function hashPassword(password: string): Promise<string> {
-  return bcrypt.hash(password, SALT_ROUNDS);
+  return bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
 }
 
 /**
- * Compare plain text password against bcrypt hash
+ * Verify plain text password against bcrypt hash
  */
-export async function comparePassword(
+export async function verifyPassword(
   password: string,
   hash: string,
 ): Promise<boolean> {
@@ -40,16 +41,16 @@ export async function comparePassword(
 /**
  * Sign JWT token using jose
  */
-export async function createToken(
-  payload: Omit<AuthTokenPayload, "iat" | "exp">,
+export async function signToken(
+  payload: Omit<JwtTokenPayload, "iat" | "exp">,
   expiresIn = DEFAULT_JWT_EXPIRES_IN,
 ): Promise<string> {
   const secretKey = getJwtSecretKey();
 
   return new SignJWT({
-    email: payload.email,
-    name: payload.name,
     role: payload.role,
+    name: payload.name,
+    email: payload.email,
   })
     .setProtectedHeader({ alg: "HS256" })
     .setSubject(payload.sub)
@@ -63,26 +64,27 @@ export async function createToken(
  */
 export async function verifyToken(
   token: string,
-): Promise<AuthTokenPayload | null> {
+): Promise<JwtTokenPayload | null> {
   try {
     const secretKey = getJwtSecretKey();
     const { payload } = await jwtVerify(token, secretKey);
 
     if (
       typeof payload.sub !== "string" ||
-      typeof payload["email"] !== "string" ||
+      typeof payload["role"] !== "string" ||
       typeof payload["name"] !== "string" ||
-      typeof payload["role"] !== "string"
+      typeof payload["email"] !== "string"
     ) {
       return null;
     }
 
     return {
-      ...payload,
       sub: payload.sub,
-      email: payload["email"] as string,
-      name: payload["name"] as string,
       role: payload["role"] as Role,
+      name: payload["name"] as string,
+      email: payload["email"] as string,
+      iat: payload.iat,
+      exp: payload.exp,
     };
   } catch {
     return null;

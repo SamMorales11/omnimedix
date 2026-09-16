@@ -13,13 +13,15 @@ export function requireRoles(...allowedRoles: Role[]) {
 
     if (!user) {
       throw new UnauthorizedError(
-        "Silakan login terlebih dahulu untuk mengakses layanan ini.",
+        "Sesi login tidak ditemukan. Silakan login terlebih dahulu.",
+        "UNAUTHORIZED",
       );
     }
 
     if (!allowedRoles.includes(user.role)) {
       throw new ForbiddenError(
-        `Akses ditolak. Role '${user.role}' tidak diizinkan mengakses resource ini.`,
+        `Akses ditolak. Role '${user.role}' tidak memiliki izin untuk mengakses resource ini.`,
+        "FORBIDDEN_ROLE",
       );
     }
 

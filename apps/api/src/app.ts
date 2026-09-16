@@ -21,15 +21,18 @@ export function createApp() {
     }),
   );
 
-  // 2. Simple Logger middleware
+  // 2. Logger middleware
   app.use("*", logger());
 
   // 3. Health check endpoint
   app.get("/health", (c) => {
     return c.json({
-      status: "ok",
-      service: "omnimedix-api",
-      timestamp: new Date().toISOString(),
+      success: true,
+      data: {
+        status: "ok",
+        service: "omnimedix-api",
+        timestamp: new Date().toISOString(),
+      },
     });
   });
 
@@ -42,7 +45,10 @@ export function createApp() {
     return c.json(
       {
         success: false,
-        message: `Rute '${c.req.method} ${c.req.path}' tidak ditemukan.`,
+        error: {
+          code: "NOT_FOUND",
+          message: `Rute '${c.req.method} ${c.req.path}' tidak ditemukan.`,
+        },
       },
       404,
     );
@@ -54,8 +60,11 @@ export function createApp() {
       return c.json(
         {
           success: false,
-          message: err.message,
-          ...(err.details ? { details: err.details } : {}),
+          error: {
+            code: err.code,
+            message: err.message,
+            ...(err.details ? { details: err.details } : {}),
+          },
         },
         err.statusCode,
       );
@@ -66,10 +75,13 @@ export function createApp() {
     return c.json(
       {
         success: false,
-        message: isProd
-          ? "Terjadi kesalahan internal pada server."
-          : err.message,
-        ...(!isProd && err.stack ? { stack: err.stack } : {}),
+        error: {
+          code: "INTERNAL_SERVER_ERROR",
+          message: isProd
+            ? "Terjadi kesalahan internal pada server."
+            : err.message,
+          ...(!isProd && err.stack ? { stack: err.stack } : {}),
+        },
       },
       500,
     );
