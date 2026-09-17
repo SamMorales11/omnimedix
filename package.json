@@ -13,6 +13,7 @@
     "db:push": "pnpm --filter @omnimedix/db db:push",
     "db:migrate": "pnpm --filter @omnimedix/db db:migrate",
     "db:studio": "pnpm --filter @omnimedix/db db:studio",
+    "db:seed": "pnpm --filter @omnimedix/db db:seed",
     "lint": "eslint .",
     "format": "prettier --write ."
   },

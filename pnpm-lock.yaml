@@ -128,6 +128,9 @@ importers:
       "@omnimedix/shared":
         specifier: workspace:*
         version: link:../shared
+      bcryptjs:
+        specifier: ^3.0.2
+        version: 3.0.3
       dotenv:
         specifier: ^16.4.7
         version: 16.6.1
@@ -141,12 +144,18 @@ importers:
       "@omnimedix/config":
         specifier: workspace:*
         version: link:../config
+      "@types/bcryptjs":
+        specifier: ^2.4.6
+        version: 2.4.6
       "@types/node":
         specifier: ^22.20.2
         version: 22.20.2
       drizzle-kit:
         specifier: ^0.30.5
         version: 0.30.6
+      tsx:
+        specifier: ^4.19.3
+        version: 4.23.13
 
   packages/shared:
     dependencies:

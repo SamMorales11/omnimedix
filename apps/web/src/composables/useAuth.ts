@@ -4,8 +4,15 @@ import { useRouter } from "vue-router";
 
 export function useAuth() {
   const authStore = useAuthStore();
-  const { user, token, isLoading, error, isAuthenticated, userRole } =
-    storeToRefs(authStore);
+  const {
+    user,
+    token,
+    isLoading,
+    isInitialized,
+    error,
+    isAuthenticated,
+    userRole,
+  } = storeToRefs(authStore);
   const router = useRouter();
 
   async function handleLogout() {
@@ -17,11 +24,14 @@ export function useAuth() {
     user,
     token,
     isLoading,
+    isInitialized,
     error,
     isAuthenticated,
     userRole,
     login: authStore.login,
-    fetchCurrentUser: authStore.fetchCurrentUser,
+    fetchMe: authStore.fetchMe,
+    fetchCurrentUser: authStore.fetchMe,
+    initAuth: authStore.initAuth,
     logout: authStore.logout,
     handleLogout,
   };

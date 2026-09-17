@@ -23,13 +23,21 @@ router.beforeEach(async (to, _from, next) => {
     ? `${pageTitle} | Omnimedix`
     : "Omnimedix Medical System";
 
-  // Load user profile if token is present
-  if (authStore.token && !authStore.user) {
-    await authStore.fetchCurrentUser();
+  // Initialize auth on startup if not yet done
+  if (!authStore.isInitialized) {
+    await authStore.initAuth();
   }
 
-  // Check authentication requirement
-  if (to.meta["requiresAuth"]) {
+  // 1. If route is guestOnly (e.g. /auth/login) and user is already logged in -> redirect to role dashboard
+  if (to.meta["guestOnly"] && authStore.isAuthenticated) {
+    if (authStore.userRole === Role.ADMIN) return next("/admin");
+    if (authStore.userRole === Role.PHARMACIST) return next("/pharmacist");
+    if (authStore.userRole === Role.DOCTOR) return next("/doctor");
+    return next("/");
+  }
+
+  // 2. Check if route requires authentication
+  if (to.matched.some((record) => record.meta["requiresAuth"])) {
     if (!authStore.isAuthenticated) {
       return next({
         path: "/auth/login",
@@ -37,27 +45,19 @@ router.beforeEach(async (to, _from, next) => {
       });
     }
 
-    // Role-based navigation check (placeholder)
+    // 3. Check role authorization
     const requiredRole = to.meta["role"] as Role | undefined;
-    if (
-      requiredRole &&
-      authStore.userRole &&
-      requiredRole !== authStore.userRole
-    ) {
-      // Super admin can access all dashboards
-      if (authStore.userRole !== Role.ADMIN) {
-        // Redirect to their respective authorized dashboard
-        if (authStore.userRole === Role.PHARMACIST) return next("/pharmacist");
+    if (requiredRole && authStore.userRole) {
+      // Super admin can inspect all dashboards
+      if (
+        authStore.userRole !== Role.ADMIN &&
+        authStore.userRole !== requiredRole
+      ) {
         if (authStore.userRole === Role.DOCTOR) return next("/doctor");
+        if (authStore.userRole === Role.PHARMACIST) return next("/pharmacist");
+        return next("/");
       }
     }
-  }
-
-  // Redirect authenticated user away from login
-  if (to.path === "/auth/login" && authStore.isAuthenticated) {
-    if (authStore.userRole === Role.ADMIN) return next("/admin");
-    if (authStore.userRole === Role.PHARMACIST) return next("/pharmacist");
-    return next("/doctor");
   }
 
   next();
