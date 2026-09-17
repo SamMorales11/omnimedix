@@ -8,12 +8,27 @@ import { authRoutes } from "./routes/auth";
 export function createApp() {
   const app = new Hono<AppEnv>();
 
-  // 1. CORS middleware
+  // 1. Safe CORS middleware for development (localhost / 127.0.0.1) & configured clients
+  const allowedOrigins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+  ];
+
   app.use(
     "*",
     cors({
-      origin: (origin) => origin || "*",
-      allowHeaders: ["Content-Type", "Authorization"],
+      origin: (origin) => {
+        if (!origin) return allowedOrigins[0]!;
+        if (allowedOrigins.includes(origin)) return origin;
+        // Allow any localhost/127.0.0.1 development ports (e.g. preview, alternative dev port)
+        if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+          return origin;
+        }
+        return allowedOrigins[0]!;
+      },
+      allowHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
       allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       exposeHeaders: ["Content-Length"],
       maxAge: 600,

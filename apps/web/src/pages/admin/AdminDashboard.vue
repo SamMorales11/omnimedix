@@ -31,7 +31,7 @@ import Button from "../../components/ui/Button.vue";
 
       <Card>
         <div class="text-xs text-slate-400 font-medium">Poliklinik Aktif</div>
-        <div class="text-2xl font-extrabold text-teal-400 mt-1">6</div>
+        <div class="text-2xl font-extrabold text-slate-100 mt-1">6</div>
         <div class="text-[11px] text-slate-500 mt-1">Umum, Gigi, Anak, dll</div>
       </Card>
 

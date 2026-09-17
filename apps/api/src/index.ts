@@ -1,17 +1,6 @@
+import "dotenv/config";
 import { serve } from "@hono/node-server";
-import dotenv from "dotenv";
-import { fileURLToPath } from "url";
-import { dirname, resolve } from "path";
 import { app } from "./app";
-
-// Load root environment variables
-try {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-  dotenv.config({ path: resolve(__dirname, "../../../.env") });
-} catch {
-  dotenv.config();
-}
 
 const PORT = Number(process.env["PORT"]) || 3000;
 

@@ -3,7 +3,116 @@
 @tailwind utilities;
 
 @layer base {
+  /* 1. Base Canvas & Text Rendering */
+  html {
+    color-scheme: dark;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
   body {
-    @apply bg-slate-950 text-slate-100 font-sans selection:bg-teal-500/20 selection:text-teal-300;
+    @apply bg-slate-950 text-slate-100 font-sans selection:bg-blue-600/30 selection:text-blue-200 min-h-full;
+  }
+
+  /* 2. Structured Typography Hierarchy (WCAG AA Compliant) */
+  h1 {
+    @apply text-2xl font-bold tracking-tight text-slate-100 leading-tight mb-2;
+  }
+
+  h2 {
+    @apply text-xl font-semibold tracking-tight text-slate-100 leading-snug mb-2;
+  }
+
+  h3 {
+    @apply text-base font-semibold tracking-normal text-slate-100 leading-normal mb-1.5;
+  }
+
+  h4 {
+    @apply text-sm font-medium tracking-normal text-slate-200 leading-normal mb-1;
+  }
+
+  p {
+    @apply text-sm leading-relaxed text-slate-300;
+  }
+
+  small {
+    @apply text-xs leading-normal text-slate-400;
+  }
+
+  /* 3. Form Elements Reset & Focus Accessibility */
+  input,
+  select,
+  textarea,
+  button {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950;
+  }
+
+  /* 4. Table Typography & Border Styling */
+  table {
+    @apply w-full border-collapse text-left text-xs;
+  }
+
+  th {
+    @apply font-medium text-slate-400 border-b border-slate-800/80 px-3 py-2.5;
+  }
+
+  td {
+    @apply border-b border-slate-800/50 px-3 py-2.5 text-slate-200;
+  }
+}
+
+@layer components {
+  /* Utility Typography Classes */
+  .heading-display {
+    @apply text-3xl font-extrabold tracking-tight text-slate-100 leading-tight;
+  }
+
+  .heading-1 {
+    @apply text-2xl font-bold tracking-tight text-slate-100;
+  }
+
+  .heading-2 {
+    @apply text-xl font-semibold tracking-tight text-slate-100;
+  }
+
+  .heading-3 {
+    @apply text-base font-semibold text-slate-100;
+  }
+
+  .body-base {
+    @apply text-sm font-normal text-slate-300 leading-relaxed;
+  }
+
+  .body-sm {
+    @apply text-xs font-normal text-slate-300 leading-normal;
+  }
+
+  .caption {
+    @apply text-xs font-normal text-slate-400 tracking-normal;
+  }
+
+  .caption-muted {
+    @apply text-2xs font-normal text-slate-400 tracking-wide;
+  }
+
+  /* Surface Container Styles */
+  .surface-card {
+    @apply bg-slate-900/90 border border-slate-800/80 rounded-xl p-6 shadow-sm;
+  }
+
+  .surface-card-interactive {
+    @apply surface-card transition-colors duration-150 hover:border-slate-700/90;
+  }
+
+  .surface-input {
+    @apply w-full px-3.5 py-2 text-sm bg-slate-900 border border-slate-800 rounded-lg text-slate-100 placeholder-slate-500 transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30;
   }
 }

@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { db } from "./client";
 import { users, polis, doctors, medicines } from "./schema";
 import bcrypt from "bcryptjs";

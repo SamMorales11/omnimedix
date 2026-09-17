@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Card from "../../components/ui/Card.vue";
-import Badge from "../../components/ui/Badge.vue";
+import StatusBadge from "../../components/ui/StatusBadge.vue";
 import Button from "../../components/ui/Button.vue";
 </script>
 
@@ -17,14 +17,14 @@ import Button from "../../components/ui/Button.vue";
           Pemeriksaan pasien, diagnosa, dan pembuatan e-resep farmasi
         </p>
       </div>
-      <Badge variant="success">Poli Umum • Aktif</Badge>
+      <StatusBadge status="active" label="Poli Umum • Aktif" />
     </div>
 
     <!-- Quick Stats -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <Card>
         <div class="text-xs text-slate-400 font-medium">Antrean Menunggu</div>
-        <div class="text-2xl font-extrabold text-teal-400 mt-1">4</div>
+        <div class="text-2xl font-extrabold text-blue-500 mt-1">4</div>
         <div class="text-[11px] text-slate-500 mt-1">
           Pasien sedang mengantre di poli
         </div>
@@ -42,7 +42,7 @@ import Button from "../../components/ui/Button.vue";
 
       <Card>
         <div class="text-xs text-slate-400 font-medium">Resep Diterbitkan</div>
-        <div class="text-2xl font-extrabold text-sky-400 mt-1">10</div>
+        <div class="text-2xl font-extrabold text-slate-100 mt-1">10</div>
         <div class="text-[11px] text-slate-500 mt-1">
           Terkirim ke unit farmasi
         </div>
@@ -66,21 +66,23 @@ import Button from "../../components/ui/Button.vue";
           </thead>
           <tbody class="divide-y divide-slate-800/80">
             <tr>
-              <td class="p-3 font-bold text-teal-400">A-001</td>
+              <td class="p-3 font-mono font-bold text-blue-400">A-001</td>
               <td class="p-3 font-medium text-slate-200">Ahmad Fauzi</td>
               <td class="p-3 text-slate-400">3271048892000001</td>
               <td class="p-3">
-                <Badge variant="warning">Sedang Diperiksa</Badge>
+                <StatusBadge status="in_progress" label="Sedang Diperiksa" />
               </td>
               <td class="p-3 text-right">
                 <Button size="sm" variant="primary">Lanjutkan Periksa</Button>
               </td>
             </tr>
             <tr>
-              <td class="p-3 font-bold text-teal-400">A-002</td>
+              <td class="p-3 font-mono font-bold text-slate-300">A-002</td>
               <td class="p-3 font-medium text-slate-200">Siti Rahmawati</td>
               <td class="p-3 text-slate-400">3271048892000002</td>
-              <td class="p-3"><Badge variant="default">Menunggu</Badge></td>
+              <td class="p-3">
+                <StatusBadge status="waiting" label="Menunggu" />
+              </td>
               <td class="p-3 text-right">
                 <Button size="sm" variant="outline">Panggil Pasien</Button>
               </td>

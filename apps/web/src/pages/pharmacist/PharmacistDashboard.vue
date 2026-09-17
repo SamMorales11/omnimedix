@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Card from "../../components/ui/Card.vue";
 import Badge from "../../components/ui/Badge.vue";
+import StatusBadge from "../../components/ui/StatusBadge.vue";
 import Button from "../../components/ui/Button.vue";
 </script>
 
@@ -36,7 +37,7 @@ import Button from "../../components/ui/Button.vue";
         <div class="text-xs text-slate-400 font-medium">
           Resep Diserahkan Hari Ini
         </div>
-        <div class="text-2xl font-extrabold text-teal-400 mt-1">18</div>
+        <div class="text-2xl font-extrabold text-slate-100 mt-1">18</div>
         <div class="text-[11px] text-slate-500 mt-1">
           Obat telah diserahkan ke pasien
         </div>
@@ -70,13 +71,13 @@ import Button from "../../components/ui/Button.vue";
           </thead>
           <tbody class="divide-y divide-slate-800/80">
             <tr>
-              <td class="p-3 font-mono font-bold text-teal-400">
+              <td class="p-3 font-mono font-bold text-blue-400">
                 RX-2026-0041
               </td>
               <td class="p-3 font-medium text-slate-200">Ahmad Fauzi</td>
               <td class="p-3 text-slate-300">dr. Hendra Setiawan, Sp.PD</td>
               <td class="p-3">
-                <Badge variant="warning">Sedang Disiapkan</Badge>
+                <StatusBadge status="preparing" label="Sedang Disiapkan" />
               </td>
               <td class="p-3 text-right">
                 <Button size="sm" variant="primary">Dispense & Serahkan</Button>

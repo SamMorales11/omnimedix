@@ -15,11 +15,7 @@ import Badge from "../../components/ui/Badge.vue";
         class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-100"
       >
         Platform Rekam Medis & Antrean Klinik
-        <span
-          class="bg-gradient-to-r from-teal-400 to-sky-400 bg-clip-text text-transparent"
-        >
-          Cerdas & Real-time
-        </span>
+        <span class="text-blue-500"> Cerdas & Real-time </span>
       </h1>
       <p class="text-base sm:text-lg text-slate-400 leading-relaxed">
         Solusi klinis terintegrasi untuk pendaftaran pasien, dokter poliklinik,
@@ -49,7 +45,7 @@ import Badge from "../../components/ui/Badge.vue";
         </p>
         <router-link
           to="/doctor"
-          class="text-xs font-semibold text-teal-400 hover:text-teal-300"
+          class="text-xs font-semibold text-blue-500 hover:text-blue-400"
         >
           Akses Modul Dokter →
         </router-link>
@@ -62,7 +58,7 @@ import Badge from "../../components/ui/Badge.vue";
         </p>
         <router-link
           to="/pharmacist"
-          class="text-xs font-semibold text-teal-400 hover:text-teal-300"
+          class="text-xs font-semibold text-blue-500 hover:text-blue-400"
         >
           Akses Modul Farmasi →
         </router-link>
@@ -79,7 +75,7 @@ import Badge from "../../components/ui/Badge.vue";
         </p>
         <router-link
           to="/admin"
-          class="text-xs font-semibold text-teal-400 hover:text-teal-300"
+          class="text-xs font-semibold text-blue-500 hover:text-blue-400"
         >
           Akses Modul Admin →
         </router-link>

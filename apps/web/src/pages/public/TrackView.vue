@@ -81,7 +81,7 @@ onMounted(() => {
             <div class="text-[10px] text-slate-400 uppercase font-semibold">
               Nomor Anda
             </div>
-            <div class="text-2xl font-bold text-teal-400 mt-1">
+            <div class="text-2xl font-bold text-blue-400 mt-1">
               {{ queueResult.queueNumber }}
             </div>
           </div>

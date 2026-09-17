@@ -10,8 +10,8 @@ export const routes: RouteRecordRaw[] = [
       {
         path: "",
         name: "home",
-        component: () => import("../pages/public/LandingPage.vue"),
-        meta: { title: "Beranda" },
+        component: () => import("../pages/public/HomeView.vue"),
+        meta: { title: "Beranda - Layanan Pasien" },
       },
       {
         path: "booking",
@@ -20,10 +20,11 @@ export const routes: RouteRecordRaw[] = [
         meta: { title: "Pendaftaran Antrean Online" },
       },
       {
-        path: "track",
-        name: "track",
-        component: () => import("../pages/public/TrackView.vue"),
-        meta: { title: "Lacak Antrean & Resep" },
+        path: "track-queue",
+        name: "track-queue",
+        alias: ["track"],
+        component: () => import("../pages/public/TrackQueueView.vue"),
+        meta: { title: "Lacak Antrean & Status Resep" },
       },
       {
         path: ":pathMatch(.*)*",
@@ -34,18 +35,16 @@ export const routes: RouteRecordRaw[] = [
     ],
   },
 
-  // 2. Authentication Layout Routes (Public)
+  // 2. Authentication Routes (Public)
   {
     path: "/auth",
-    component: () => import("../layouts/AuthLayout.vue"),
-    children: [
-      {
-        path: "login",
-        name: "login",
-        component: () => import("../pages/auth/LoginView.vue"),
-        meta: { title: "Masuk Portal Medis", guestOnly: true },
-      },
-    ],
+    redirect: "/auth/login",
+  },
+  {
+    path: "/auth/login",
+    name: "login",
+    component: () => import("../pages/auth/LoginView.vue"),
+    meta: { title: "Masuk Portal Medis", guestOnly: true },
   },
 
   // 3. Protected Dashboard Routes (Role-based)
