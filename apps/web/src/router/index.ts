@@ -45,18 +45,13 @@ router.beforeEach(async (to, _from, next) => {
       });
     }
 
-    // 3. Check role authorization
+    // 3. Check strict role authorization
     const requiredRole = to.meta["role"] as Role | undefined;
-    if (requiredRole && authStore.userRole) {
-      // Super admin can inspect all dashboards
-      if (
-        authStore.userRole !== Role.ADMIN &&
-        authStore.userRole !== requiredRole
-      ) {
-        if (authStore.userRole === Role.DOCTOR) return next("/doctor");
-        if (authStore.userRole === Role.PHARMACIST) return next("/pharmacist");
-        return next("/");
-      }
+    if (requiredRole && authStore.userRole !== requiredRole) {
+      if (authStore.userRole === Role.ADMIN) return next("/admin");
+      if (authStore.userRole === Role.DOCTOR) return next("/doctor");
+      if (authStore.userRole === Role.PHARMACIST) return next("/pharmacist");
+      return next("/");
     }
   }
 

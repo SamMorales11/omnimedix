@@ -1,28 +1,38 @@
-import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
-import { drizzle, type NeonHttpDatabase } from "drizzle-orm/neon-http";
-import * as schema from "./schema";
 import dotenv from "dotenv";
-import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
+import { Pool } from "@neondatabase/serverless";
+import { drizzle, type NeonDatabase } from "drizzle-orm/neon-serverless";
+import * as schema from "./schema";
 
-// Automatically load .env from workspace root if available
+// 1. Muat .env relatif dari letak file client.ts
 try {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
+
+  // Jalur packages/db/.env (1 tingkat di atas src/)
+  dotenv.config({ path: resolve(__dirname, "../.env") });
+
+  // Jalur root monorepo .env (3 tingkat di atas src/)
   dotenv.config({ path: resolve(__dirname, "../../../.env") });
 } catch {
-  dotenv.config();
+  // Abaikan jika import.meta.url tidak tersedia di environment runtime
 }
 
-export type DbClient = NeonHttpDatabase<typeof schema>;
+// 2. Muat .env relatif dari current working directory (lokasi terminal dieksekusi)
+dotenv.config();
+dotenv.config({ path: resolve(process.cwd(), ".env") });
+dotenv.config({ path: resolve(process.cwd(), "packages/db/.env") });
+
+export type DbClient = NeonDatabase<typeof schema>;
 
 export function createDb(connectionString?: string): DbClient {
-  const url = connectionString || process.env["DATABASE_URL"];
+  const url = connectionString || process.env.DATABASE_URL;
   if (!url) {
     throw new Error("DATABASE_URL environment variable is missing.");
   }
-  const sql: NeonQueryFunction<boolean, boolean> = neon(url);
-  return drizzle(sql, { schema });
+  const pool = new Pool({ connectionString: url });
+  return drizzle(pool, { schema });
 }
 
 // Lazy/singleton client for convenient direct import

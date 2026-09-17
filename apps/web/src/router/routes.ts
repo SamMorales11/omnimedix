@@ -56,9 +56,20 @@ export const routes: RouteRecordRaw[] = [
       {
         path: "doctor",
         name: "doctor-dashboard",
-        component: () => import("../pages/doctor/DoctorDashboard.vue"),
+        alias: ["doctor/queues"],
+        component: () => import("../pages/doctor/QueueListView.vue"),
         meta: {
-          title: "Konsol Dokter",
+          title: "Konsol Dokter - Antrean Pasien",
+          requiresAuth: true,
+          role: Role.DOCTOR,
+        },
+      },
+      {
+        path: "doctor/queues/:id",
+        name: "doctor-queue-detail",
+        component: () => import("../pages/doctor/QueueDetailView.vue"),
+        meta: {
+          title: "Penanganan Pasien & Resep",
           requiresAuth: true,
           role: Role.DOCTOR,
         },

@@ -4,6 +4,8 @@ import { logger } from "hono/logger";
 import { AppError } from "./lib/errors";
 import type { AppEnv } from "./middleware/auth";
 import { authRoutes } from "./routes/auth";
+import { publicRoutes } from "./routes/public";
+import { doctorRoutes } from "./routes/doctor";
 
 export function createApp() {
   const app = new Hono<AppEnv>();
@@ -54,6 +56,10 @@ export function createApp() {
   // 4. API Routes
   app.route("/api/auth", authRoutes);
   app.route("/auth", authRoutes);
+  app.route("/api/public", publicRoutes);
+  app.route("/public", publicRoutes);
+  app.route("/api/doctor", doctorRoutes);
+  app.route("/doctor", doctorRoutes);
 
   // 5. Global 404 Handler
   app.notFound((c) => {

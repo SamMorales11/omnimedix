@@ -22,3 +22,5 @@ export * from "./lib/errors";
 export * from "./middleware/auth";
 export * from "./middleware/rbac";
 export * from "./services/auth.service";
+export * from "./services/doctor.service";
+export * from "./routes/doctor";

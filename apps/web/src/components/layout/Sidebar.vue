@@ -38,7 +38,7 @@ const menuItems: MenuItem[] = [
     icon: "settings",
   },
   {
-    title: "Konsol Poliklinik",
+    title: "Konsol Antrean Pasien",
     path: "/doctor",
     role: Role.DOCTOR,
     icon: "stethoscope",
@@ -53,9 +53,7 @@ const menuItems: MenuItem[] = [
 
 const filteredMenu = computed(() => {
   const currentUser = user.value;
-  if (!currentUser) return menuItems;
-  // If admin, show all modules for complete system oversight; otherwise filter by role
-  if (currentUser.role === Role.ADMIN) return menuItems;
+  if (!currentUser) return [];
   return menuItems.filter(
     (item) => !item.role || item.role === currentUser.role,
   );

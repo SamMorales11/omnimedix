@@ -2,6 +2,7 @@ import {
   pgTable,
   uuid,
   varchar,
+  text,
   date,
   timestamp,
   index,
@@ -28,6 +29,8 @@ export const queues = pgTable(
     status: queueStatusEnum("status").notNull().default("waiting"),
     bookingCode: varchar("booking_code", { length: 50 }).unique(),
     queueDate: date("queue_date").notNull().defaultNow(),
+    diagnosis: text("diagnosis"),
+    notes: text("notes"),
     createdAt: timestamp("created_at", { withTimezone: true, mode: "date" })
       .defaultNow()
       .notNull(),

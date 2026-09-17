@@ -52,8 +52,15 @@ function getDashboardLink(role: Role | null): string {
         </router-link>
 
         <nav
-          class="hidden md:flex items-center gap-4 text-xs font-medium text-slate-400"
+          class="hidden md:flex items-center gap-5 text-xs font-medium text-slate-400"
         >
+          <router-link
+            to="/"
+            class="hover:text-slate-200 transition-colors"
+            exact-active-class="text-blue-500 font-semibold"
+          >
+            Beranda
+          </router-link>
           <router-link
             to="/booking"
             class="hover:text-slate-200 transition-colors"
@@ -143,6 +150,13 @@ function getDashboardLink(role: Role | null): string {
       class="sm:hidden border-t border-slate-800/80 bg-slate-950 px-4 pt-3 pb-5 space-y-3"
     >
       <nav class="flex flex-col space-y-2 text-sm font-medium text-slate-300">
+        <router-link
+          to="/"
+          class="px-3 py-2 rounded-lg hover:bg-slate-900 hover:text-white transition-colors"
+          exact-active-class="bg-slate-900 text-blue-400 font-semibold"
+        >
+          Beranda
+        </router-link>
         <router-link
           to="/booking"
           class="px-3 py-2 rounded-lg hover:bg-slate-900 hover:text-white transition-colors"
