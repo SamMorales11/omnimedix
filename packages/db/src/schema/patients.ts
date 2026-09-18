@@ -2,6 +2,7 @@ import {
   pgTable,
   uuid,
   varchar,
+  boolean,
   date,
   timestamp,
   index,
@@ -17,6 +18,7 @@ export const patients = pgTable(
     gender: genderEnum("gender").notNull(),
     phone: varchar("phone", { length: 30 }),
     nik: varchar("nik", { length: 50 }),
+    isActive: boolean("is_active").notNull().default(true),
     createdAt: timestamp("created_at", { withTimezone: true, mode: "date" })
       .defaultNow()
       .notNull(),
@@ -29,6 +31,7 @@ export const patients = pgTable(
     index("idx_patients_nik").on(table.nik),
     index("idx_patients_phone").on(table.phone),
     index("idx_patients_full_name").on(table.fullName),
+    index("idx_patients_is_active").on(table.isActive),
   ],
 );
 

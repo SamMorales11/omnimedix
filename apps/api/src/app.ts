@@ -7,6 +7,7 @@ import { authRoutes } from "./routes/auth";
 import { publicRoutes } from "./routes/public";
 import { doctorRoutes } from "./routes/doctor";
 import { pharmacistRoutes } from "./routes/pharmacist";
+import { adminRoutes } from "./routes/admin";
 
 export function createApp() {
   const app = new Hono<AppEnv>();
@@ -63,6 +64,8 @@ export function createApp() {
   app.route("/doctor", doctorRoutes);
   app.route("/api/pharmacist", pharmacistRoutes);
   app.route("/pharmacist", pharmacistRoutes);
+  app.route("/api/admin", adminRoutes);
+  app.route("/admin", adminRoutes);
 
   // 5. Global 404 Handler
   app.notFound((c) => {

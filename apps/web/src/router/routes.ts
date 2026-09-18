@@ -130,9 +130,49 @@ export const routes: RouteRecordRaw[] = [
       {
         path: "admin",
         name: "admin-dashboard",
-        component: () => import("../pages/admin/AdminDashboard.vue"),
+        component: () => import("../pages/admin/DashboardView.vue"),
         meta: {
-          title: "Panel Admin",
+          title: "Dashboard Admin",
+          requiresAuth: true,
+          role: Role.ADMIN,
+        },
+      },
+      {
+        path: "admin/patients",
+        name: "admin-patients",
+        component: () => import("../pages/admin/PatientListView.vue"),
+        meta: {
+          title: "Data Pasien",
+          requiresAuth: true,
+          role: Role.ADMIN,
+        },
+      },
+      {
+        path: "admin/doctors",
+        name: "admin-doctors",
+        component: () => import("../pages/admin/DoctorListView.vue"),
+        meta: {
+          title: "Data Dokter",
+          requiresAuth: true,
+          role: Role.ADMIN,
+        },
+      },
+      {
+        path: "admin/users",
+        name: "admin-users",
+        component: () => import("../pages/admin/UserListView.vue"),
+        meta: {
+          title: "Kelola Akun Pengguna",
+          requiresAuth: true,
+          role: Role.ADMIN,
+        },
+      },
+      {
+        path: "admin/medicines",
+        name: "admin-medicines",
+        component: () => import("../pages/admin/MedicineListView.vue"),
+        meta: {
+          title: "Master Data Obat",
           requiresAuth: true,
           role: Role.ADMIN,
         },
