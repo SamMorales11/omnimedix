@@ -1,211 +1,193 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Button from "../../components/ui/Button.vue";
-import Card from "../../components/ui/Card.vue";
-import Badge from "../../components/ui/Badge.vue";
-import StatusBadge from "../../components/ui/StatusBadge.vue";
-import Skeleton from "../../components/ui/Skeleton.vue";
 
-const showSkeletonDemo = ref(false);
-
-const liveQueues = [
-  {
-    poli: "Poli Umum",
-    doctor: "dr. Hendra Setiawan, Sp.PD",
-    current: "A-012",
-    waiting: 4,
-    status: "in_progress" as const,
-  },
-  {
-    poli: "Poli Gigi & Mulut",
-    doctor: "drg. Anita Wijaya",
-    current: "B-006",
-    waiting: 2,
-    status: "in_progress" as const,
-  },
-  {
-    poli: "Poli Pediatri (Anak)",
-    doctor: "dr. Rian Pratama, Sp.A",
-    current: "C-003",
-    waiting: 1,
-    status: "in_progress" as const,
-  },
-];
+// Status operasional poliklinik terintegrasi
+const isSystemActive = ref(true);
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-16">
-    <!-- Hero Section -->
-    <section class="text-center space-y-6 max-w-3xl mx-auto">
-      <div class="inline-flex items-center gap-2">
-        <Badge variant="primary" dot>
-          Modul Pasien • Layanan Publik Terpadu
-        </Badge>
+  <div class="relative min-h-[calc(100vh-4rem)] flex flex-col justify-between overflow-hidden">
+    <!-- Subtle Pixel Background Grid Pattern with Radial Falloff -->
+    <div
+      class="absolute inset-0 pointer-events-none z-0 opacity-40 [background-image:radial-gradient(rgba(148,163,184,0.18)_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_30%,black_30%,transparent_90%)]"
+      aria-hidden="true"
+    />
+
+    <!-- Ambient Subtle Glow at Top Center -->
+    <div
+      class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[340px] bg-blue-600/10 blur-[130px] pointer-events-none rounded-full"
+      aria-hidden="true"
+    />
+
+    <!-- Main Content Container with Generous Calm Spacing -->
+    <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28 flex flex-col items-center">
+      
+      <!-- Top Meta Pill with Subtle Pixel Ornament -->
+      <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-xs text-slate-300 backdrop-blur-sm shadow-sm mb-8 transition-all hover:border-slate-700">
+        <!-- 8-bit / Pixelated Micro Icon -->
+        <span class="flex items-center text-blue-400 select-none">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 10 10" fill="currentColor">
+            <rect x="4" y="1" width="2" height="8" />
+            <rect x="1" y="4" width="8" height="2" />
+          </svg>
+        </span>
+        <span class="font-mono text-[11px] text-slate-400 tracking-wider uppercase">OmniMedix Core</span>
+        <span class="w-1 h-1 rounded-full bg-slate-700" />
+        <span class="flex items-center gap-1.5 text-emerald-400 font-medium">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          Layanan Antrean Aktif
+        </span>
       </div>
 
-      <h1
-        class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-100 leading-tight"
-      >
-        Akses Layanan Medis &
-        <span class="text-blue-500">Pendaftaran Antrean</span> Mandiri
-      </h1>
+      <!-- Hero Typography Section -->
+      <div class="text-center max-w-3xl space-y-5">
+        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-100 leading-[1.12]">
+          Layanan Rawat Jalan
+          <span class="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300">
+            Lebih Tertib & Presisi
+          </span>
+        </h1>
 
-      <p
-        class="text-sm sm:text-base text-slate-400 leading-relaxed max-w-2xl mx-auto"
-      >
-        Platform registrasi poliklinik dan pelacakan antrean pemeriksaan dokter
-        serta peresepan farmasi secara real-time tanpa antrean fisik yang
-        panjang di loket klinik.
-      </p>
+        <p class="text-base sm:text-lg text-slate-400 font-normal leading-relaxed max-w-xl mx-auto">
+          Daftar antrean poliklinik secara mandiri, pantau panggilan periksa dokter, dan lacak kesiapan e-resep farmasi tanpa menunggu di lorong klinik.
+        </p>
 
-      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-        <router-link to="/booking">
-          <Button size="lg" variant="primary"> Daftar Antrean Pasien → </Button>
-        </router-link>
-        <router-link to="/track-queue">
-          <Button size="lg" variant="secondary"> Lacak Antrean & Resep </Button>
-        </router-link>
+        <!-- Call-to-Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-4">
+          <!-- Primary CTA: Booking -->
+          <router-link to="/booking" class="w-full sm:w-auto">
+            <Button
+              size="lg"
+              variant="primary"
+              class="w-full sm:w-auto group relative overflow-hidden px-7 shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 transition-all"
+            >
+              <span class="font-medium">Ambil Nomor Antrean</span>
+              <!-- Pixelated Arrow Icon -->
+              <svg class="w-3.5 h-3.5 ml-2.5 transition-transform duration-150 group-hover:translate-x-1" viewBox="0 0 10 10" fill="currentColor">
+                <rect x="1" y="4" width="6" height="2" />
+                <rect x="5" y="2" width="2" height="2" />
+                <rect x="7" y="3" width="2" height="4" />
+                <rect x="5" y="6" width="2" height="2" />
+              </svg>
+            </Button>
+          </router-link>
+
+          <!-- Secondary CTA: Track Queue -->
+          <router-link to="/track-queue" class="w-full sm:w-auto">
+            <Button
+              size="lg"
+              variant="outline"
+              class="w-full sm:w-auto px-6 border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-slate-100"
+            >
+              <span>Lacak Antrean & Resep</span>
+            </Button>
+          </router-link>
+        </div>
       </div>
-    </section>
 
-    <!-- Fitur Layanan Pasien -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <Card
-        hoverable
-        title="1. Reservasi Poliklinik"
-        subtitle="Pendaftaran Mandiri Cepat"
-      >
-        <p class="text-xs text-slate-400 leading-relaxed mb-4">
-          Pilih poliklinik tujuan dan jadwal dokter spesialis. Dapatkan nomor
-          antrean serta kode booking otomatis langsung dari ponsel Anda.
-        </p>
-        <router-link
-          to="/booking"
-          class="text-xs font-semibold text-blue-500 hover:text-blue-400 transition-colors"
-        >
-          Ambil Nomor Antrean →
-        </router-link>
-      </Card>
+      <!-- 3 Key Information Cards with Refined Pixel Corner Accents -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 w-full mt-20 sm:mt-24">
+        
+        <!-- Card 1: Booking Antrean -->
+        <div class="relative group bg-slate-900/50 hover:bg-slate-900/80 border border-slate-800/90 hover:border-blue-500/50 rounded-xl p-6 transition-all duration-200">
+          <!-- Pixel Corner Markers (+) -->
+          <span class="absolute -top-1.5 -left-1.5 font-mono text-[10px] text-slate-600 group-hover:text-blue-400 select-none pointer-events-none transition-colors">+</span>
+          <span class="absolute -top-1.5 -right-1.5 font-mono text-[10px] text-slate-600 group-hover:text-blue-400 select-none pointer-events-none transition-colors">+</span>
+          <span class="absolute -bottom-1.5 -left-1.5 font-mono text-[10px] text-slate-600 group-hover:text-blue-400 select-none pointer-events-none transition-colors">+</span>
+          <span class="absolute -bottom-1.5 -right-1.5 font-mono text-[10px] text-slate-600 group-hover:text-blue-400 select-none pointer-events-none transition-colors">+</span>
 
-      <Card
-        hoverable
-        title="2. Pantau Antrean Live"
-        subtitle="Pelacakan Status Real-time"
-      >
-        <p class="text-xs text-slate-400 leading-relaxed mb-4">
-          Cek nomor yang sedang diperiksa di ruang konsultasi. Hadir tepat waktu
-          tanpa perlu menunggu lama di ruang tunggu rumah sakit.
-        </p>
-        <router-link
-          to="/track-queue"
-          class="text-xs font-semibold text-blue-500 hover:text-blue-400 transition-colors"
-        >
-          Pantau Antrean Live →
-        </router-link>
-      </Card>
+          <!-- Header / Tag -->
+          <div class="flex items-center justify-between mb-4">
+            <span class="font-mono text-xs text-blue-400/90 tracking-wider">
+              [ 01 // REGISTRASI ]
+            </span>
+            <div class="w-2 h-2 bg-blue-500/60 rounded-xs" />
+          </div>
 
-      <Card
-        hoverable
-        title="3. Status Dispensing Obat"
-        subtitle="Integrasi Unit Farmasi"
-      >
-        <p class="text-xs text-slate-400 leading-relaxed mb-4">
-          Setelah pemeriksaan selesai, e-resep otomatis terkirim ke unit
-          farmasi. Pasien dapat memantau status penyiapan obat hingga siap
-          diambil.
-        </p>
-        <router-link
-          to="/track-queue"
-          class="text-xs font-semibold text-blue-500 hover:text-blue-400 transition-colors"
-        >
-          Cek Status Obat →
-        </router-link>
-      </Card>
-    </section>
-
-    <!-- Live Poliklinik Queue Overview (with Skeleton Loading Toggle) -->
-    <section class="space-y-4">
-      <div
-        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-800/80 pb-3"
-      >
-        <div>
-          <h2 class="text-base font-bold text-slate-100 m-0">
-            Monitoring Antrean Poliklinik Hari Ini
+          <h2 class="text-lg font-semibold text-slate-100 mb-2 tracking-tight">
+            Booking Antrean Mandiri
           </h2>
-          <p class="text-xs text-slate-400 mt-0.5">
-            Pembaruan berkala antrean aktif di poliklinik rawat jalan
+          
+          <p class="text-sm text-slate-400 leading-relaxed mb-6">
+            Pilih poliklinik spesialis dan jadwal dokter dalam hitungan detik. Dapatkan kode tiket antrean instan tanpa berkas fisik.
           </p>
+
+          <router-link
+            to="/booking"
+            class="inline-flex items-center text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors group/link"
+          >
+            <span>Daftar Sekarang</span>
+            <span class="ml-1.5 transition-transform group-hover/link:translate-x-1">→</span>
+          </router-link>
         </div>
 
-        <button
-          type="button"
-          @click="showSkeletonDemo = !showSkeletonDemo"
-          class="text-xs text-slate-400 hover:text-slate-200 border border-slate-800 hover:border-slate-700 bg-slate-900 px-2.5 py-1.5 rounded-lg transition-colors shrink-0"
-        >
-          {{
-            showSkeletonDemo
-              ? "Tampilkan Data Aktif"
-              : "Simulasi Loading Skeleton"
-          }}
-        </button>
-      </div>
+        <!-- Card 2: Lacak Antrean Live -->
+        <div class="relative group bg-slate-900/50 hover:bg-slate-900/80 border border-slate-800/90 hover:border-teal-500/50 rounded-xl p-6 transition-all duration-200">
+          <!-- Pixel Corner Markers (+) -->
+          <span class="absolute -top-1.5 -left-1.5 font-mono text-[10px] text-slate-600 group-hover:text-teal-400 select-none pointer-events-none transition-colors">+</span>
+          <span class="absolute -top-1.5 -right-1.5 font-mono text-[10px] text-slate-600 group-hover:text-teal-400 select-none pointer-events-none transition-colors">+</span>
+          <span class="absolute -bottom-1.5 -left-1.5 font-mono text-[10px] text-slate-600 group-hover:text-teal-400 select-none pointer-events-none transition-colors">+</span>
+          <span class="absolute -bottom-1.5 -right-1.5 font-mono text-[10px] text-slate-600 group-hover:text-teal-400 select-none pointer-events-none transition-colors">+</span>
 
-      <!-- Skeleton State Preview -->
-      <div
-        v-if="showSkeletonDemo"
-        class="grid grid-cols-1 sm:grid-cols-3 gap-4"
-      >
-        <div v-for="i in 3" :key="i" class="surface-card space-y-3">
-          <div class="flex justify-between items-center">
-            <Skeleton variant="text" width="50%" />
-            <Skeleton variant="circular" width="16px" height="16px" />
+          <!-- Header / Tag -->
+          <div class="flex items-center justify-between mb-4">
+            <span class="font-mono text-xs text-teal-400/90 tracking-wider">
+              [ 02 // MONITOR ]
+            </span>
+            <div class="w-2 h-2 bg-teal-500/60 rounded-xs" />
           </div>
-          <Skeleton variant="text" width="75%" class="h-3" />
-          <div
-            class="pt-2 border-t border-slate-800/60 flex justify-between items-baseline"
+
+          <h2 class="text-lg font-semibold text-slate-100 mb-2 tracking-tight">
+            Pantau Giliran & Obat
+          </h2>
+          
+          <p class="text-sm text-slate-400 leading-relaxed mb-6">
+            Lacak nomor antrean yang sedang diperiksa di ruang dokter serta progres peracikan obat di unit farmasi secara real-time.
+          </p>
+
+          <router-link
+            to="/track-queue"
+            class="inline-flex items-center text-xs font-semibold text-teal-400 hover:text-teal-300 transition-colors group/link"
           >
-            <Skeleton variant="rounded" width="40%" class="h-8" />
-            <Skeleton variant="text" width="30%" class="h-3" />
+            <span>Cek Status Antrean</span>
+            <span class="ml-1.5 transition-transform group-hover/link:translate-x-1">→</span>
+          </router-link>
+        </div>
+
+        <!-- Card 3: Keunggulan Terintegrasi -->
+        <div class="relative group bg-slate-900/50 hover:bg-slate-900/80 border border-slate-800/90 hover:border-indigo-500/50 rounded-xl p-6 transition-all duration-200">
+          <!-- Pixel Corner Markers (+) -->
+          <span class="absolute -top-1.5 -left-1.5 font-mono text-[10px] text-slate-600 group-hover:text-indigo-400 select-none pointer-events-none transition-colors">+</span>
+          <span class="absolute -top-1.5 -right-1.5 font-mono text-[10px] text-slate-600 group-hover:text-indigo-400 select-none pointer-events-none transition-colors">+</span>
+          <span class="absolute -bottom-1.5 -left-1.5 font-mono text-[10px] text-slate-600 group-hover:text-indigo-400 select-none pointer-events-none transition-colors">+</span>
+          <span class="absolute -bottom-1.5 -right-1.5 font-mono text-[10px] text-slate-600 group-hover:text-indigo-400 select-none pointer-events-none transition-colors">+</span>
+
+          <!-- Header / Tag -->
+          <div class="flex items-center justify-between mb-4">
+            <span class="font-mono text-xs text-indigo-400/90 tracking-wider">
+              [ 03 // INTEGRASI ]
+            </span>
+            <div class="w-2 h-2 bg-indigo-500/60 rounded-xs" />
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-100 mb-2 tracking-tight">
+            Sinkronisasi Langsung
+          </h2>
+          
+          <p class="text-sm text-slate-400 leading-relaxed mb-6">
+            Pendaftaran terhubung langsung ke konsol dokter, diagnosis, dan resep farmasi tanpa penumpukan berkas dan proses berbelit.
+          </p>
+
+          <div class="inline-flex items-center text-xs font-mono text-slate-400">
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 mr-2" />
+            <span>Terhubung &middot; Paperless</span>
           </div>
         </div>
+
       </div>
 
-      <!-- Live Queue Card Grid -->
-      <div v-else class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card v-for="item in liveQueues" :key="item.poli">
-          <div class="flex items-start justify-between gap-2 mb-1">
-            <h3 class="text-sm font-semibold text-slate-100 m-0">
-              {{ item.poli }}
-            </h3>
-            <StatusBadge :status="item.status" label="Aktif" size="sm" />
-          </div>
-          <p class="text-xs text-slate-400 mb-3">
-            {{ item.doctor }}
-          </p>
-          <div
-            class="pt-2 border-t border-slate-800/80 flex items-baseline justify-between"
-          >
-            <div>
-              <span
-                class="text-[10px] text-slate-500 uppercase tracking-wider block"
-                >Sedang Dilayani</span
-              >
-              <span class="font-mono text-xl font-bold text-blue-400">{{
-                item.current
-              }}</span>
-            </div>
-            <div class="text-right">
-              <span
-                class="text-[10px] text-slate-500 uppercase tracking-wider block"
-                >Sisa Antrean</span
-              >
-              <span class="text-xs font-semibold text-slate-300"
-                >{{ item.waiting }} Pasien</span
-              >
-            </div>
-          </div>
-        </Card>
-      </div>
-    </section>
+    </div>
   </div>
 </template>
+

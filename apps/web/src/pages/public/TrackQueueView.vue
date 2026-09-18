@@ -13,6 +13,8 @@ import StatusBadge, {
 import Skeleton from "../../components/ui/Skeleton.vue";
 import EmptyState from "../../components/ui/EmptyState.vue";
 import Alert from "../../components/ui/Alert.vue";
+import QueueTicketModal from "../../components/queue/QueueTicketModal.vue";
+import type { QueueTicketDownloadData } from "../../utils/downloadTicket";
 
 export interface TrackQueueResult {
   queueNumber: string;
@@ -49,6 +51,26 @@ const searchType = ref<"code" | "queueNumber">("code");
 const codeInput = ref("");
 const queueNumberInput = ref("");
 const dateInput = ref(new Date().toISOString().split("T")[0]!);
+
+// Modal Bukti Antrean
+const isTicketModalOpen = ref(false);
+
+const ticketData = computed<QueueTicketDownloadData | null>(() => {
+  if (!searchResult.value) return null;
+  return {
+    queueNumber: searchResult.value.queueNumber,
+    bookingCode: searchResult.value.bookingCode || "BK-ONLINE",
+    patientName: searchResult.value.patientName,
+    poliName: searchResult.value.poliName,
+    doctorName: searchResult.value.doctorName,
+    queueDate: searchResult.value.queueDate,
+    status: searchResult.value.status,
+    estimasi:
+      searchResult.value.position.estimatedWaitMinutes !== null
+        ? `± ${searchResult.value.position.estimatedWaitMinutes} menit`
+        : "Menunggu giliran",
+  };
+});
 
 // State siklus hidup pelacakan
 const isLoading = ref(false);
@@ -414,6 +436,12 @@ onMounted(() => {
       <div
         class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6 relative overflow-hidden"
       >
+        <!-- Pixel corner markers -->
+        <span class="absolute -top-1.5 -left-1.5 font-mono text-[10px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1.5 -right-1.5 font-mono text-[10px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -bottom-1.5 -left-1.5 font-mono text-[10px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -bottom-1.5 -right-1.5 font-mono text-[10px] text-slate-700 select-none pointer-events-none">+</span>
+
         <!-- Accent Glow -->
         <div
           :class="[
@@ -443,7 +471,20 @@ onMounted(() => {
             </h2>
           </div>
 
-          <div>
+          <div class="flex items-center gap-2.5">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              class="gap-1.5 text-xs border-slate-700 hover:border-slate-600 text-slate-200"
+              @click="isTicketModalOpen = true"
+            >
+              <svg class="w-3.5 h-3.5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              </svg>
+              <span>Cetak / Unduh Bukti</span>
+            </Button>
+
             <StatusBadge
               :status="searchResult.status"
               :label="statusLabelMap[searchResult.status]"
@@ -702,5 +743,12 @@ onMounted(() => {
         </router-link>
       </template>
     </EmptyState>
+
+    <!-- Modal Bukti Antrean -->
+    <QueueTicketModal
+      :is-open="isTicketModalOpen"
+      :ticket="ticketData"
+      @close="isTicketModalOpen = false"
+    />
   </div>
 </template>

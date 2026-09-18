@@ -116,3 +116,50 @@
     @apply w-full px-3.5 py-2 text-sm bg-slate-900 border border-slate-800 rounded-lg text-slate-100 placeholder-slate-500 transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30;
   }
 }
+
+/* ------------------------------------------------------------- */
+/* Dedicated High-Contrast Print Stylesheet                      */
+/* ------------------------------------------------------------- */
+@media print {
+  header,
+  footer,
+  nav,
+  aside,
+  button,
+  .print-hidden,
+  .no-print {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  }
+
+  .printable-ticket-card {
+    display: block !important;
+    position: relative !important;
+    margin: 20px auto !important;
+    width: 100% !important;
+    max-width: 460px !important;
+    border: 2px solid #000000 !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 24px !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .printable-ticket-card * {
+    color: #000000 !important;
+    background: transparent !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+

@@ -15,10 +15,12 @@
     "db:studio": "pnpm --filter @omnimedix/db db:studio",
     "db:seed": "pnpm --filter @omnimedix/db db:seed",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:e2e": "pnpm --filter @omnimedix/api exec tsx src/tests/e2e-stabilization.test.ts"
   },
   "devDependencies": {
     "@types/node": "^22.20.2",
+    "drizzle-orm": "^0.40.0",
     "eslint": "^10.10.0",
     "prettier": "^3.9.6",
     "typescript": "^7.0.2"

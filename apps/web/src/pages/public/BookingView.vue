@@ -11,6 +11,7 @@ import StatusBadge from "../../components/ui/StatusBadge.vue";
 import Skeleton from "../../components/ui/Skeleton.vue";
 import EmptyState from "../../components/ui/EmptyState.vue";
 import Alert from "../../components/ui/Alert.vue";
+import { downloadTicketImage } from "../../utils/downloadTicket";
 
 // Interface definisi data API
 export interface PublicPoli {
@@ -356,9 +357,24 @@ async function copyToClipboard(text: string, type: "code" | "queue") {
   }
 }
 
-// 9. Cetak Tiket
+// 9. Cetak & Unduh Tiket
 function printTicket() {
   window.print();
+}
+
+function handleDownloadTicket() {
+  if (!bookingResult.value) return;
+  downloadTicketImage({
+    queueNumber: bookingResult.value.queueNumber,
+    bookingCode: bookingResult.value.bookingCode,
+    patientName: bookingResult.value.patient.fullName,
+    poliName: bookingResult.value.poliName,
+    doctorName: bookingResult.value.doctorName,
+    queueDate: bookingResult.value.queueDate,
+    status: bookingResult.value.status,
+    estimasi: bookingResult.value.estimasi,
+  });
+  toast.success("Gambar bukti antrean berhasil diunduh!");
 }
 
 // 10. Reset Form untuk Pendaftaran Baru
@@ -992,8 +1008,14 @@ onMounted(() => {
 
         <!-- Official Queue Ticket Card -->
         <div
-          class="bg-slate-900 border-2 border-blue-600/60 rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden print:border-black print:text-black print:bg-white print:p-4"
+          class="printable-ticket-card bg-slate-900 border-2 border-blue-600/60 rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden print:border-black print:text-black print:bg-white print:p-4"
         >
+          <!-- Pixel corner markers for technical healthcare precision -->
+          <span class="absolute -top-1.5 -left-1.5 font-mono text-[10px] text-blue-500/80 select-none pointer-events-none print:hidden">+</span>
+          <span class="absolute -top-1.5 -right-1.5 font-mono text-[10px] text-blue-500/80 select-none pointer-events-none print:hidden">+</span>
+          <span class="absolute -bottom-1.5 -left-1.5 font-mono text-[10px] text-blue-500/80 select-none pointer-events-none print:hidden">+</span>
+          <span class="absolute -bottom-1.5 -right-1.5 font-mono text-[10px] text-blue-500/80 select-none pointer-events-none print:hidden">+</span>
+
           <!-- Watermark / Background Glow -->
           <div
             class="absolute -top-24 -right-24 w-60 h-60 bg-blue-600/10 rounded-full blur-3xl pointer-events-none print:hidden"
@@ -1141,17 +1163,34 @@ onMounted(() => {
         <div
           class="flex flex-col sm:flex-row items-center justify-between gap-3 print:hidden"
         >
-          <Button
-            variant="outline"
-            size="md"
-            class="w-full sm:w-auto"
-            @click="printTicket"
-          >
-            🖨️ Cetak / Unduh Tiket
-          </Button>
+          <div class="flex items-center gap-2.5 w-full sm:w-auto">
+            <Button
+              variant="outline"
+              size="md"
+              class="w-full sm:w-auto flex items-center gap-2"
+              @click="printTicket"
+            >
+              <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              </svg>
+              <span>Cetak / PDF</span>
+            </Button>
 
-          <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-            <Button variant="secondary" size="md" @click="resetBooking">
+            <Button
+              variant="secondary"
+              size="md"
+              class="w-full sm:w-auto flex items-center gap-2"
+              @click="handleDownloadTicket"
+            >
+              <svg class="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Unduh Bukti (PNG)</span>
+            </Button>
+          </div>
+
+          <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+            <Button variant="ghost" size="md" @click="resetBooking">
               Daftar Antrean Lain
             </Button>
 

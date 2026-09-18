@@ -36,8 +36,10 @@ function getDashboardLink(role: Role | null): string {
     class="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md"
   >
     <div
-      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+      class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
     >
+      <span class="absolute -bottom-[5px] left-4 sm:left-6 lg:left-8 font-mono text-[9px] text-slate-800 select-none pointer-events-none">+</span>
+      <span class="absolute -bottom-[5px] right-4 sm:right-6 lg:right-8 font-mono text-[9px] text-slate-800 select-none pointer-events-none">+</span>
       <!-- Logo & Desktop Navigation -->
       <div class="flex items-center gap-6">
         <router-link to="/" class="flex items-center gap-2.5">
