@@ -6,6 +6,7 @@ import type { AppEnv } from "./middleware/auth";
 import { authRoutes } from "./routes/auth";
 import { publicRoutes } from "./routes/public";
 import { doctorRoutes } from "./routes/doctor";
+import { pharmacistRoutes } from "./routes/pharmacist";
 
 export function createApp() {
   const app = new Hono<AppEnv>();
@@ -60,6 +61,8 @@ export function createApp() {
   app.route("/public", publicRoutes);
   app.route("/api/doctor", doctorRoutes);
   app.route("/doctor", doctorRoutes);
+  app.route("/api/pharmacist", pharmacistRoutes);
+  app.route("/pharmacist", pharmacistRoutes);
 
   // 5. Global 404 Handler
   app.notFound((c) => {

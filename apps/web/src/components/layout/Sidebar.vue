@@ -27,7 +27,15 @@ interface MenuItem {
   title: string;
   path: string;
   role?: Role;
-  icon: "home" | "stethoscope" | "pill" | "settings" | "external";
+  icon:
+    | "home"
+    | "stethoscope"
+    | "pill"
+    | "box"
+    | "inbox"
+    | "chart"
+    | "settings"
+    | "external";
 }
 
 const menuItems: MenuItem[] = [
@@ -44,12 +52,43 @@ const menuItems: MenuItem[] = [
     icon: "stethoscope",
   },
   {
-    title: "Farmasi & Resep",
+    title: "Daftar Resep",
     path: "/pharmacist",
     role: Role.PHARMACIST,
     icon: "pill",
   },
+  {
+    title: "Katalog & Stok Obat",
+    path: "/pharmacist/medicines",
+    role: Role.PHARMACIST,
+    icon: "box",
+  },
+  {
+    title: "Catat Obat Masuk",
+    path: "/pharmacist/stock-in",
+    role: Role.PHARMACIST,
+    icon: "inbox",
+  },
+  {
+    title: "Laporan Stok",
+    path: "/pharmacist/reports/stock",
+    role: Role.PHARMACIST,
+    icon: "chart",
+  },
 ];
+
+function isItemActive(itemPath: string): boolean {
+  if (itemPath === "/pharmacist") {
+    return (
+      route.path === "/pharmacist" ||
+      route.path.startsWith("/pharmacist/prescriptions")
+    );
+  }
+  return (
+    route.path === itemPath ||
+    (itemPath !== "/" && route.path.startsWith(itemPath))
+  );
+}
 
 const filteredMenu = computed(() => {
   const currentUser = user.value;
@@ -152,7 +191,7 @@ const filteredMenu = computed(() => {
             :title="props.isCollapsed ? item.title : undefined"
             :class="[
               'flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors group',
-              route.path.startsWith(item.path)
+              isItemActive(item.path)
                 ? 'bg-blue-600/15 text-blue-400 border border-blue-500/30'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/80 border border-transparent',
               props.isCollapsed ? 'justify-center px-2' : '',
@@ -195,6 +234,57 @@ const filteredMenu = computed(() => {
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"
+              />
+            </svg>
+
+            <!-- Box / Inventory Icon -->
+            <svg
+              v-else-if="item.icon === 'box'"
+              class="h-4 w-4 shrink-0"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.75"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
+              />
+            </svg>
+
+            <!-- Inbox / Stock-in Icon -->
+            <svg
+              v-else-if="item.icon === 'inbox'"
+              class="h-4 w-4 shrink-0"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.75"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+              />
+            </svg>
+
+            <!-- Chart / Report Icon -->
+            <svg
+              v-else-if="item.icon === 'chart'"
+              class="h-4 w-4 shrink-0"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.75"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
               />
             </svg>
 

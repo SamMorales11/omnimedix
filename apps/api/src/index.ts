@@ -23,4 +23,6 @@ export * from "./middleware/auth";
 export * from "./middleware/rbac";
 export * from "./services/auth.service";
 export * from "./services/doctor.service";
+export * from "./services/pharmacist.service";
 export * from "./routes/doctor";
+export * from "./routes/pharmacist";

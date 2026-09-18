@@ -76,10 +76,53 @@ export const routes: RouteRecordRaw[] = [
       },
       {
         path: "pharmacist",
-        name: "pharmacist-dashboard",
-        component: () => import("../pages/pharmacist/PharmacistDashboard.vue"),
+        name: "pharmacist-prescriptions",
+        alias: ["pharmacist/prescriptions"],
+        component: () => import("../pages/pharmacist/PrescriptionListView.vue"),
         meta: {
-          title: "Konsol Farmasi",
+          title: "Konsol Farmasi - Daftar Resep",
+          requiresAuth: true,
+          role: Role.PHARMACIST,
+        },
+      },
+      {
+        path: "pharmacist/prescriptions/:id",
+        name: "pharmacist-prescription-detail",
+        component: () =>
+          import("../pages/pharmacist/PrescriptionDetailView.vue"),
+        meta: {
+          title: "Detail Resep Farmasi",
+          requiresAuth: true,
+          role: Role.PHARMACIST,
+        },
+      },
+      {
+        path: "pharmacist/medicines",
+        name: "pharmacist-medicines",
+        component: () => import("../pages/pharmacist/MedicineListView.vue"),
+        meta: {
+          title: "Katalog & Stok Obat Farmasi",
+          requiresAuth: true,
+          role: Role.PHARMACIST,
+        },
+      },
+      {
+        path: "pharmacist/stock-in",
+        name: "pharmacist-stock-in",
+        component: () => import("../pages/pharmacist/StockInView.vue"),
+        meta: {
+          title: "Pencatatan Obat Masuk",
+          requiresAuth: true,
+          role: Role.PHARMACIST,
+        },
+      },
+      {
+        path: "pharmacist/reports/stock",
+        name: "pharmacist-stock-report",
+        alias: ["pharmacist/stock-report", "pharmacist/reports"],
+        component: () => import("../pages/pharmacist/StockReportView.vue"),
+        meta: {
+          title: "Laporan Stok Farmasi",
           requiresAuth: true,
           role: Role.PHARMACIST,
         },
