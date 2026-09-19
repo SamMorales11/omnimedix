@@ -1,3 +1,5 @@
+import omnimedixLogo from "../assets/omnimedix logo.png";
+
 export interface QueueTicketDownloadData {
   queueNumber: string;
   bookingCode: string;
@@ -14,59 +16,77 @@ export interface QueueTicketDownloadData {
  * Menggunakan HTML5 Canvas murni tanpa dependensi eksternal.
  */
 export function downloadTicketImage(data: QueueTicketDownloadData): void {
-  const width = 640;
-  const height = 860;
-  const scale = 2; // 2x scale for Retina crispness
+  const img = new Image();
+  img.src = omnimedixLogo;
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width * scale;
-  canvas.height = height * scale;
+  const renderAndDownload = () => {
+    const width = 640;
+    const height = 860;
+    const scale = 2; // 2x scale for Retina crispness
 
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = width * scale;
+    canvas.height = height * scale;
 
-  ctx.scale(scale, scale);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-  // 1. Background Kanvas
-  ctx.fillStyle = "#090d16";
-  ctx.fillRect(0, 0, width, height);
+    ctx.scale(scale, scale);
 
-  // 2. Border Kartu Utama
-  const margin = 24;
-  const cardW = width - margin * 2;
-  const cardH = height - margin * 2;
-  const radius = 16;
+    // 1. Background Kanvas
+    ctx.fillStyle = "#090d16";
+    ctx.fillRect(0, 0, width, height);
 
-  ctx.strokeStyle = "#1e293b";
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.roundRect(margin, margin, cardW, cardH, radius);
-  ctx.stroke();
+    // 2. Border Kartu Utama
+    const margin = 24;
+    const cardW = width - margin * 2;
+    const cardH = height - margin * 2;
+    const radius = 16;
 
-  // 3. Sentuhan Pixel Cross (+) di Sudut-sudut Kartu
-  ctx.font = "bold 13px 'Courier New', monospace";
-  ctx.fillStyle = "#38bdf8";
-  ctx.fillText("+", margin - 5, margin + 4);
-  ctx.fillText("+", width - margin - 5, margin + 4);
-  ctx.fillText("+", margin - 5, height - margin + 4);
-  ctx.fillText("+", width - margin - 5, height - margin + 4);
+    ctx.strokeStyle = "#1e293b";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(margin, margin, cardW, cardH, radius);
+    ctx.stroke();
 
-  // 4. Header Kartu & Logo Omnimedix
-  const logoX = margin + 28;
-  const logoY = margin + 32;
-  
-  // Icon box
-  ctx.fillStyle = "#2563eb";
-  ctx.beginPath();
-  ctx.roundRect(logoX, logoY, 32, 32, 8);
-  ctx.fill();
+    // 3. Sentuhan Pixel Cross (+) di Sudut-sudut Kartu
+    ctx.font = "bold 13px 'Courier New', monospace";
+    ctx.fillStyle = "#38bdf8";
+    ctx.fillText("+", margin - 5, margin + 4);
+    ctx.fillText("+", width - margin - 5, margin + 4);
+    ctx.fillText("+", margin - 5, height - margin + 4);
+    ctx.fillText("+", width - margin - 5, height - margin + 4);
 
-  // Icon Plus (+)
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 20px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText("+", logoX + 16, logoY + 16);
+    // 4. Header Kartu & Logo Omnimedix
+    const logoX = margin + 28;
+    const logoY = margin + 30;
+    const logoSize = 36;
+    
+    // Icon box with dark background and subtle border
+    ctx.fillStyle = "#0f172a";
+    ctx.beginPath();
+    ctx.roundRect(logoX, logoY, logoSize, logoSize, 8);
+    ctx.fill();
+    ctx.strokeStyle = "#1e293b";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Corner pixel notches
+    ctx.fillStyle = "#38bdf8";
+    ctx.fillRect(logoX, logoY, 3, 3);
+    ctx.fillRect(logoX + logoSize - 3, logoY + logoSize - 3, 3, 3);
+
+    // Draw official Omnimedix logo
+    try {
+      ctx.drawImage(img, logoX + 2, logoY + 2, logoSize - 4, logoSize - 4);
+    } catch {
+      // Fallback
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 20px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("+", logoX + logoSize / 2, logoY + logoSize / 2);
+    }
 
   // Brand Name & Subtitle
   ctx.textAlign = "left";
@@ -217,11 +237,19 @@ export function downloadTicketImage(data: QueueTicketDownloadData): void {
   ctx.font = "10px 'Courier New', monospace";
   ctx.fillText(`[ OMNIMEDIX // VERIFIED QUEUE PASS // ${data.bookingCode} ]`, width / 2, footY);
 
-  // Trigger Download
-  const link = document.createElement("a");
-  link.download = `bukti-antrean-${data.queueNumber}-${data.bookingCode}.png`;
-  link.href = canvas.toDataURL("image/png");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+    // Trigger Download
+    const link = document.createElement("a");
+    link.download = `bukti-antrean-${data.queueNumber}-${data.bookingCode}.png`;
+    link.href = canvas.toDataURL("image/png");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  if (img.complete && img.naturalWidth > 0) {
+    renderAndDownload();
+  } else {
+    img.onload = () => renderAndDownload();
+    img.onerror = () => renderAndDownload();
+  }
 }

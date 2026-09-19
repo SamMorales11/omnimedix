@@ -2,12 +2,14 @@
 import Button from "../../components/ui/Button.vue";
 import Card from "../../components/ui/Card.vue";
 import Badge from "../../components/ui/Badge.vue";
+import AppLogo from "../../components/ui/AppLogo.vue";
 </script>
 
 <template>
   <div class="space-y-24 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
     <!-- Hero Section -->
-    <section class="text-center space-y-6 pt-10 max-w-3xl mx-auto">
+    <section class="text-center space-y-6 pt-10 max-w-3xl mx-auto flex flex-col items-center">
+      <AppLogo size="lg" show-subtitle subtitle="Platform Rekam Medis & Antrean Klinik" class="mb-2" />
       <Badge variant="info" size="md">
         Omnimedix Monorepo • Vue 3 + Hono + Neon
       </Badge>

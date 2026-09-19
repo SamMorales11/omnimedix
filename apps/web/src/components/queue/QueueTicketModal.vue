@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import Button from "../ui/Button.vue";
 import StatusBadge from "../ui/StatusBadge.vue";
+import AppLogo from "../ui/AppLogo.vue";
 import { downloadTicketImage, type QueueTicketDownloadData } from "../../utils/downloadTicket";
 
 interface Props {
@@ -83,19 +84,13 @@ const formattedStatus = computed(() => {
           
           <!-- Clinic Branding & Title -->
           <div class="flex items-center justify-between pb-4 border-b border-slate-800/80 print:border-black">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-base print:border print:border-black print:text-black print:bg-white">
-                +
-              </div>
-              <div>
-                <span class="font-bold text-base tracking-tight text-slate-100 print:text-black">
-                  Omni<span class="text-blue-400 print:text-black">medix</span> Clinic
-                </span>
-                <p class="text-[11px] text-slate-400 print:text-black">
-                  BUKTI RESMI PENDAFTARAN ANTREAN
-                </p>
-              </div>
-            </div>
+            <AppLogo
+              size="sm"
+              :clickable="false"
+              theme="print-adaptive"
+              show-subtitle
+              subtitle="BUKTI RESMI PENDAFTARAN ANTREAN"
+            />
 
             <div class="text-right">
               <span class="font-mono text-xs text-blue-400 font-semibold print:text-black">

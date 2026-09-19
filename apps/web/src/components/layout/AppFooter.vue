@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import AppLogo from "../ui/AppLogo.vue";
 
 const currentYear = computed(() => new Date().getFullYear());
 </script>
@@ -14,14 +15,7 @@ const currentYear = computed(() => new Date().getFullYear());
       <div class="py-7 flex flex-col md:flex-row items-center justify-between gap-5">
         <!-- Logo & Nama & Keterangan Singkat -->
         <div class="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 text-center sm:text-left">
-          <router-link to="/" class="flex items-center gap-2 group">
-            <div class="h-6 w-6 rounded-md bg-blue-600 group-hover:bg-blue-500 flex items-center justify-center font-bold text-white text-xs shadow-xs transition-colors">
-              +
-            </div>
-            <span class="font-bold text-sm tracking-tight text-slate-200 group-hover:text-white transition-colors">
-              Omni<span class="text-blue-500">medix</span>
-            </span>
-          </router-link>
+          <AppLogo size="xs" />
 
           <span class="hidden sm:inline text-slate-700 font-mono text-xs">/</span>
 

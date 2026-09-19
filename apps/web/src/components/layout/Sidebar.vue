@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useAuth } from "../../composables/useAuth";
 import Badge from "../ui/Badge.vue";
+import AppLogo from "../ui/AppLogo.vue";
 import { Role } from "@omnimedix/shared";
 
 interface Props {
@@ -160,23 +161,10 @@ const filteredMenu = computed(() => {
       <div
         class="h-16 flex items-center justify-between px-4 border-b border-slate-800/80"
       >
-        <router-link
-          to="/"
-          class="flex items-center gap-2.5 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1"
-        >
-          <div
-            class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-base shadow-sm shrink-0"
-          >
-            +
-          </div>
-          <div v-if="!props.isCollapsed" class="min-w-0">
-            <span
-              class="font-bold text-base tracking-tight text-slate-100 truncate block"
-            >
-              Omni<span class="text-blue-500">medix</span>
-            </span>
-          </div>
-        </router-link>
+        <AppLogo
+          size="sm"
+          :show-text="!props.isCollapsed"
+        />
 
         <!-- Mobile Close Button -->
         <button

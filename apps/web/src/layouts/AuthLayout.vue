@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // AuthLayout: Bersih, centered, bebas distraksi untuk alur otentikasi portal medis
+import AppLogo from "../components/ui/AppLogo.vue";
 </script>
 
 <template>
@@ -20,23 +21,12 @@
 
     <div class="relative z-10 w-full max-w-md space-y-6">
       <!-- Logo Omnimedix & Judul Singkat -->
-      <div class="text-center space-y-2">
-        <router-link
-          to="/"
-          class="inline-flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1"
-        >
-          <div
-            class="h-9 w-9 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-lg shadow-sm group-hover:bg-blue-500 transition-colors"
-          >
-            +
-          </div>
-          <span class="font-bold text-2xl tracking-tight text-slate-100">
-            Omni<span class="text-blue-500">medix</span>
-          </span>
-        </router-link>
-        <p class="text-xs text-slate-400">
-          Sistem Informasi & Manajemen Pelayanan Medis Terpadu
-        </p>
+      <div class="flex flex-col items-center text-center">
+        <AppLogo
+          size="lg"
+          show-subtitle
+          subtitle="Sistem Informasi & Manajemen Pelayanan Medis Terpadu"
+        />
       </div>
 
       <!-- Wadah Konten Utama (Form Login / Auth) with Pixel Corner Markers -->

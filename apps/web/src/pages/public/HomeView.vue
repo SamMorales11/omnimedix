@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Button from "../../components/ui/Button.vue";
+import omnimedixLogo from "../../assets/omnimedix logo.png";
 
 // Status operasional poliklinik terintegrasi
 const isSystemActive = ref(true);
@@ -23,16 +24,14 @@ const isSystemActive = ref(true);
     <!-- Main Content Container with Generous Calm Spacing -->
     <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28 flex flex-col items-center">
       
-      <!-- Top Meta Pill with Subtle Pixel Ornament -->
+      <!-- Top Meta Pill with Official Omnimedix Emblem -->
       <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-xs text-slate-300 backdrop-blur-sm shadow-sm mb-8 transition-all hover:border-slate-700">
-        <!-- 8-bit / Pixelated Micro Icon -->
-        <span class="flex items-center text-blue-400 select-none">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 10 10" fill="currentColor">
-            <rect x="4" y="1" width="2" height="8" />
-            <rect x="1" y="4" width="8" height="2" />
-          </svg>
+        <div class="w-4 h-4 rounded-[3px] bg-slate-950 border border-blue-500/40 flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_6px_rgba(59,130,246,0.3)]">
+          <img :src="omnimedixLogo" alt="Omnimedix" class="w-full h-full object-contain scale-[1.35]" />
+        </div>
+        <span class="font-mono text-[11px] text-slate-300 tracking-wider uppercase font-semibold">
+          Omni<span class="text-blue-400">medix</span> Core
         </span>
-        <span class="font-mono text-[11px] text-slate-400 tracking-wider uppercase">OmniMedix Core</span>
         <span class="w-1 h-1 rounded-full bg-slate-700" />
         <span class="flex items-center gap-1.5 text-emerald-400 font-medium">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />

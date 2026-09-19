@@ -11,6 +11,7 @@ import StatusBadge from "../../components/ui/StatusBadge.vue";
 import Skeleton from "../../components/ui/Skeleton.vue";
 import EmptyState from "../../components/ui/EmptyState.vue";
 import Alert from "../../components/ui/Alert.vue";
+import AppLogo from "../../components/ui/AppLogo.vue";
 import { downloadTicketImage } from "../../utils/downloadTicket";
 
 // Interface definisi data API
@@ -1023,19 +1024,16 @@ onMounted(() => {
 
           <!-- Ticket Header -->
           <div
-            class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-4 print:border-black"
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-4 print:border-black"
           >
             <div>
-              <span
-                class="text-[11px] font-bold uppercase tracking-widest text-blue-400 print:text-black"
-              >
-                OMNIMEDIX MEDICAL CLINIC
-              </span>
-              <h2
-                class="text-lg font-bold text-slate-100 mt-0.5 print:text-black"
-              >
-                Tiket Reservasi Antrean Rawat Jalan
-              </h2>
+              <AppLogo
+                size="sm"
+                :clickable="false"
+                theme="print-adaptive"
+                show-subtitle
+                subtitle="Tiket Reservasi Antrean Rawat Jalan"
+              />
             </div>
             <div class="print:hidden">
               <StatusBadge

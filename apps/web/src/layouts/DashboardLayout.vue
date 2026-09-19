@@ -4,6 +4,7 @@ import { useRoute } from "vue-router";
 import Sidebar from "../components/layout/Sidebar.vue";
 import Button from "../components/ui/Button.vue";
 import Badge from "../components/ui/Badge.vue";
+import AppLogo from "../components/ui/AppLogo.vue";
 import { useAuth } from "../composables/useAuth";
 
 const route = useRoute();
@@ -58,6 +59,8 @@ const pageTitle = computed(
               />
             </svg>
           </button>
+
+          <AppLogo size="xs" :show-text="false" class="lg:hidden" />
 
           <div>
             <h1 class="text-sm font-semibold tracking-tight text-slate-100 m-0">
