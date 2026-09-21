@@ -1386,9 +1386,9 @@ onUnmounted(() => {
                             v-for="med in activeMedicines"
                             :key="med.id"
                             :value="med.id"
+                            :disabled="med.currentStock <= 0"
                           >
-                            {{ med.name }} (Stok: {{ med.currentStock }}
-                            {{ med.unit }}) - {{ med.category }}
+                            {{ med.name }} {{ med.currentStock <= 0 ? '(STOK HABIS)' : `(Stok: ${med.currentStock} ${med.unit})` }} - {{ med.category }}
                           </option>
                         </select>
                       </div>

@@ -63,10 +63,22 @@ async function handleLogin() {
 
   const success = await authStore.login(email.value.trim(), password.value);
   if (success) {
-    const redirectUrl =
-      (route.query["redirect"] as string) ||
-      getRedirectForRole(authStore.userRole);
-    await router.push(redirectUrl);
+    const redirectQuery = route.query["redirect"] as string | undefined;
+    let target = getRedirectForRole(authStore.userRole);
+
+    // Pastikan redirect query hanya digunakan jika sesuai dengan izin role pengguna
+    if (redirectQuery && redirectQuery.startsWith("/")) {
+      const isRoleAllowed =
+        (authStore.userRole === Role.ADMIN && redirectQuery.startsWith("/admin")) ||
+        (authStore.userRole === Role.DOCTOR && redirectQuery.startsWith("/doctor")) ||
+        (authStore.userRole === Role.PHARMACIST && redirectQuery.startsWith("/pharmacist"));
+
+      if (isRoleAllowed) {
+        target = redirectQuery;
+      }
+    }
+
+    await router.push(target);
   }
 }
 

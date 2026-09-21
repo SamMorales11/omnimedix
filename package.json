@@ -14,6 +14,7 @@
     "db:migrate": "pnpm --filter @omnimedix/db db:migrate",
     "db:studio": "pnpm --filter @omnimedix/db db:studio",
     "db:seed": "pnpm --filter @omnimedix/db db:seed",
+    "db:seed:fresh": "pnpm --filter @omnimedix/db db:seed:fresh",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test:e2e": "pnpm --filter @omnimedix/api exec tsx src/tests/e2e-stabilization.test.ts"

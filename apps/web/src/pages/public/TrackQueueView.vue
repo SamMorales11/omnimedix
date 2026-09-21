@@ -228,25 +228,40 @@ function handleResetSearch() {
   router.replace({ query: {} });
 }
 
-// Inisialisasi otomatis jika ada parameter query di URL
-onMounted(() => {
-  const codeParam = route.query["code"] as string;
-  const queueNumParam = route.query["queueNumber"] as string;
-  const dateParam = route.query["date"] as string;
+// Inisialisasi dan sinkronisasi otomatis jika ada parameter query di URL
+function syncQueryAndSearch() {
+  const codeParam = (route.query["code"] as string | undefined)?.trim();
+  const queueNumParam = (route.query["queueNumber"] as string | undefined)?.trim();
+  const dateParam = (route.query["date"] as string | undefined)?.trim();
 
-  if (codeParam) {
+  if (codeParam && codeParam !== searchResult.value?.bookingCode) {
     searchType.value = "code";
-    codeInput.value = codeParam.trim();
+    codeInput.value = codeParam;
     executeSearch();
-  } else if (queueNumParam) {
+  } else if (
+    queueNumParam &&
+    (queueNumParam !== searchResult.value?.queueNumber ||
+      (dateParam && dateParam !== searchResult.value?.queueDate))
+  ) {
     searchType.value = "queueNumber";
-    queueNumberInput.value = queueNumParam.trim();
+    queueNumberInput.value = queueNumParam;
     if (dateParam) {
       dateInput.value = dateParam;
     }
     executeSearch();
   }
+}
+
+onMounted(() => {
+  syncQueryAndSearch();
 });
+
+watch(
+  () => [route.query["code"], route.query["queueNumber"], route.query["date"]],
+  () => {
+    syncQueryAndSearch();
+  },
+);
 </script>
 
 <template>
