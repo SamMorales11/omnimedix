@@ -10,8 +10,14 @@ out/
 
 # Environment files
 .env
+.env.*
 .env*.local
 !.env.example
+
+# TypeScript & Build info
+*.tsbuildinfo
+vite.config.d.ts*
+vite.config.js*
 
 # Logs
 npm-debug.log*
@@ -42,6 +48,8 @@ coverage/
 .DS_Store
 Thumbs.db
 
-# OS / Temp
+# OS, Temp & Scratch
 tmp/
 temp/
+scratch/
+.system_generated/

@@ -15,10 +15,15 @@ export interface JwtTokenPayload {
 }
 
 function getJwtSecretKey(): Uint8Array {
-  const secret =
-    process.env["JWT_SECRET"] ||
-    "omnimedix-super-secret-jwt-key-2026-secure-clinical-portal";
-  return new TextEncoder().encode(secret);
+  const secret = process.env["JWT_SECRET"];
+  if (!secret && process.env["NODE_ENV"] === "production") {
+    throw new Error(
+      "CRITICAL SECURITY ERROR: JWT_SECRET environment variable is missing in production!",
+    );
+  }
+  return new TextEncoder().encode(
+    secret || "omnimedix-dev-default-jwt-secret-key-change-in-prod",
+  );
 }
 
 /**
