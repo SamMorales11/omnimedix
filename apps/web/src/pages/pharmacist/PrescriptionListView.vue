@@ -196,28 +196,29 @@ onMounted(() => {
   <div class="space-y-6">
     <!-- Header Section -->
     <div
-      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800/80 pb-5"
     >
       <div>
-        <div class="flex items-center gap-3">
-          <h1 class="text-2xl font-bold tracking-tight text-slate-100">
-            Daftar Resep & Dispensing Obat
-          </h1>
-          <Badge variant="info">Unit Farmasi</Badge>
+        <div class="flex items-center gap-2 mb-1.5">
+          <Badge variant="info" dot>Unit Farmasi</Badge>
+          <span class="text-xs text-slate-500 font-mono">• Dispensing & Peracikan</span>
         </div>
-        <p class="text-xs text-slate-400 mt-1">
-          Kelola verifikasi resep dokter, proses peracikan, dan penyerahan obat
-          ke pasien.
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-100">
+          Daftar Resep & Dispensing Obat
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+          Verifikasi resep elektronik dokter, monitor tahapan peracikan, dan lakukan serah terima obat dengan pengurangan inventaris otomatis.
         </p>
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2.5 self-start sm:self-auto">
         <Button
-          variant="secondary"
+          variant="outline"
           size="sm"
           :loading="isRefreshing"
           @click="fetchPrescriptions(true)"
+          class="gap-1.5"
         >
           <template #icon>
             <svg
@@ -241,80 +242,88 @@ onMounted(() => {
     </div>
 
     <!-- Quick Stats Metric Cards -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4">
       <Card
-        class="cursor-pointer transition-colors"
+        class="relative overflow-hidden cursor-pointer transition-all p-4 sm:p-5"
         :class="
           selectedStatus === 'pending'
-            ? 'ring-2 ring-amber-500/50 bg-slate-900'
-            : 'hover:border-slate-700'
+            ? 'ring-2 ring-amber-500/60 bg-amber-950/20 border-amber-800/60'
+            : 'hover:border-slate-700 bg-slate-900/70 border-slate-800'
         "
         @click="handleStatusFilter('pending')"
       >
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-amber-600/40 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-amber-600/40 select-none pointer-events-none">+</span>
         <div class="flex items-center justify-between">
-          <span class="text-xs text-slate-400 font-medium"
+          <span class="text-xs text-amber-300/90 font-medium"
             >Menunggu (Pending)</span
           >
           <span class="h-2 w-2 rounded-full bg-amber-400" />
         </div>
-        <div class="text-2xl font-extrabold text-amber-400 mt-1.5">
+        <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 mt-1.5 font-mono">
           {{ stats.pending }}
         </div>
         <div class="text-[11px] text-slate-500 mt-1">Perlu diracik</div>
       </Card>
 
       <Card
-        class="cursor-pointer transition-colors"
+        class="relative overflow-hidden cursor-pointer transition-all p-4 sm:p-5"
         :class="
           selectedStatus === 'preparing'
-            ? 'ring-2 ring-blue-500/50 bg-slate-900'
-            : 'hover:border-slate-700'
+            ? 'ring-2 ring-blue-500/60 bg-blue-950/20 border-blue-800/60'
+            : 'hover:border-slate-700 bg-slate-900/70 border-slate-800'
         "
         @click="handleStatusFilter('preparing')"
       >
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-blue-600/40 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-blue-600/40 select-none pointer-events-none">+</span>
         <div class="flex items-center justify-between">
-          <span class="text-xs text-slate-400 font-medium">Sedang Diracik</span>
+          <span class="text-xs text-blue-300/90 font-medium">Sedang Diracik</span>
           <span class="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
         </div>
-        <div class="text-2xl font-extrabold text-blue-400 mt-1.5">
+        <div class="text-2xl sm:text-3xl font-extrabold text-blue-400 mt-1.5 font-mono">
           {{ stats.preparing }}
         </div>
         <div class="text-[11px] text-slate-500 mt-1">Dalam pengerjaan</div>
       </Card>
 
       <Card
-        class="cursor-pointer transition-colors"
+        class="relative overflow-hidden cursor-pointer transition-all p-4 sm:p-5"
         :class="
           selectedStatus === 'ready'
-            ? 'ring-2 ring-emerald-500/50 bg-slate-900'
-            : 'hover:border-slate-700'
+            ? 'ring-2 ring-emerald-500/60 bg-emerald-950/20 border-emerald-800/60'
+            : 'hover:border-slate-700 bg-slate-900/70 border-slate-800'
         "
         @click="handleStatusFilter('ready')"
       >
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-emerald-600/40 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-emerald-600/40 select-none pointer-events-none">+</span>
         <div class="flex items-center justify-between">
-          <span class="text-xs text-slate-400 font-medium">Siap Diambil</span>
+          <span class="text-xs text-emerald-300/90 font-medium">Siap Diambil</span>
           <span class="h-2 w-2 rounded-full bg-emerald-400" />
         </div>
-        <div class="text-2xl font-extrabold text-emerald-400 mt-1.5">
+        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-1.5 font-mono">
           {{ stats.ready }}
         </div>
         <div class="text-[11px] text-slate-500 mt-1">Menunggu pasien</div>
       </Card>
 
       <Card
-        class="cursor-pointer transition-colors"
+        class="relative overflow-hidden cursor-pointer transition-all p-4 sm:p-5"
         :class="
           selectedStatus === 'taken'
-            ? 'ring-2 ring-slate-400/50 bg-slate-900'
-            : 'hover:border-slate-700'
+            ? 'ring-2 ring-slate-400/60 bg-slate-800/30 border-slate-700'
+            : 'hover:border-slate-700 bg-slate-900/70 border-slate-800'
         "
         @click="handleStatusFilter('taken')"
       >
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
         <div class="flex items-center justify-between">
           <span class="text-xs text-slate-400 font-medium">Diserahkan</span>
           <span class="h-2 w-2 rounded-full bg-slate-400" />
         </div>
-        <div class="text-2xl font-extrabold text-slate-300 mt-1.5">
+        <div class="text-2xl sm:text-3xl font-extrabold text-slate-300 mt-1.5 font-mono">
           {{ stats.taken }}
         </div>
         <div class="text-[11px] text-slate-500 mt-1">Selesai diserahkan</div>

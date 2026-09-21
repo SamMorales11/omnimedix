@@ -274,7 +274,7 @@ onMounted(async () => {
   <div class="space-y-6">
     <!-- Top Bar -->
     <div
-      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800/80 pb-4"
     >
       <div class="flex items-center gap-3">
         <Button
@@ -355,7 +355,9 @@ onMounted(async () => {
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
       <!-- Kolom Kiri: Form Pencatatan Obat Masuk -->
       <div class="lg:col-span-7">
-        <Card title="Formulir Penerimaan Obat">
+        <Card title="Formulir Penerimaan Obat" class="relative overflow-hidden bg-slate-900/70 border-slate-800 shadow-sm">
+          <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+          <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
           <!-- Loading state obat -->
           <div v-if="isLoadingMedicines" class="space-y-4 py-3">
             <Skeleton class="h-10 w-full rounded-lg" />
@@ -587,7 +589,9 @@ onMounted(async () => {
 
       <!-- Kolom Kanan: Riwayat Obat Masuk Terkini -->
       <div class="lg:col-span-5">
-        <Card title="Riwayat Penerimaan Terkini">
+        <Card title="Riwayat Penerimaan Terkini" class="relative overflow-hidden bg-slate-900/70 border-slate-800 shadow-sm">
+          <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+          <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
           <template #action>
             <Button
               size="sm"

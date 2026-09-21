@@ -464,18 +464,14 @@ onMounted(() => {
       class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-5"
     >
       <div>
-        <div class="flex items-center gap-3">
-          <h1 class="text-2xl font-bold tracking-tight text-slate-100">
-            Kelola Master Data Obat
-          </h1>
-          <span
-            v-if="!isLoading"
-            class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20"
-          >
-            {{ medicines.length }} Obat Terdaftar
-          </span>
+        <div class="flex items-center gap-2 mb-1">
+          <Badge variant="primary" size="sm" dot>Administrator</Badge>
+          <span class="text-xs text-slate-500 font-mono tracking-wider uppercase">Master Obat</span>
         </div>
-        <p class="text-sm text-slate-400 mt-1">
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-100">
+          Kelola Master Data Obat
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
           Pantau katalog obat, kelola batas stok minimum, perbarui stok master, dan atur ketersediaan obat farmasi & klinik.
         </p>
       </div>
@@ -508,6 +504,7 @@ onMounted(() => {
           variant="primary"
           size="sm"
           @click="openCreateModal"
+          class="shadow-sm shadow-blue-500/20"
         >
           <svg
             class="w-4 h-4 mr-2"
@@ -529,13 +526,19 @@ onMounted(() => {
 
     <!-- 4 Kartu Ringkasan Stok Master -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <Card class="border-slate-800 bg-slate-900/60 p-4">
+      <!-- 1. Total Master Obat -->
+      <Card class="relative border-slate-800 bg-slate-900/70 backdrop-blur-sm p-4 overflow-hidden">
+        <div class="absolute -top-1 -left-1 font-mono text-[9px] text-blue-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -top-1 -right-1 font-mono text-[9px] text-blue-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-blue-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-blue-600/40 select-none pointer-events-none">+</div>
+
         <div class="flex items-center justify-between">
           <div>
             <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">
               Total Master Obat
             </p>
-            <p class="text-2xl font-bold text-slate-100 mt-1">
+            <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-100 mt-1">
               {{ isLoading ? "-" : stats.total }}
             </p>
           </div>
@@ -547,13 +550,19 @@ onMounted(() => {
         </div>
       </Card>
 
-      <Card class="border-slate-800 bg-slate-900/60 p-4">
+      <!-- 2. Stok Normal -->
+      <Card class="relative border-slate-800 bg-slate-900/70 backdrop-blur-sm p-4 overflow-hidden">
+        <div class="absolute -top-1 -left-1 font-mono text-[9px] text-emerald-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -top-1 -right-1 font-mono text-[9px] text-emerald-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-emerald-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-emerald-600/40 select-none pointer-events-none">+</div>
+
         <div class="flex items-center justify-between">
           <div>
             <p class="text-xs font-medium text-emerald-400 uppercase tracking-wider">
               Stok Normal
             </p>
-            <p class="text-2xl font-bold text-slate-100 mt-1">
+            <p class="text-2xl sm:text-3xl font-extrabold font-mono text-emerald-400 mt-1">
               {{ isLoading ? "-" : stats.normal }}
             </p>
           </div>
@@ -565,13 +574,19 @@ onMounted(() => {
         </div>
       </Card>
 
-      <Card class="border-slate-800 bg-slate-900/60 p-4">
+      <!-- 3. Stok Rendah -->
+      <Card class="relative border-slate-800 bg-slate-900/70 backdrop-blur-sm p-4 overflow-hidden">
+        <div class="absolute -top-1 -left-1 font-mono text-[9px] text-amber-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -top-1 -right-1 font-mono text-[9px] text-amber-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-amber-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-amber-600/40 select-none pointer-events-none">+</div>
+
         <div class="flex items-center justify-between">
           <div>
             <p class="text-xs font-medium text-amber-400 uppercase tracking-wider">
               Stok Rendah (&le; Min)
             </p>
-            <p class="text-2xl font-bold text-slate-100 mt-1">
+            <p class="text-2xl sm:text-3xl font-extrabold font-mono text-amber-400 mt-1">
               {{ isLoading ? "-" : stats.low }}
             </p>
           </div>
@@ -583,13 +598,19 @@ onMounted(() => {
         </div>
       </Card>
 
-      <Card class="border-slate-800 bg-slate-900/60 p-4">
+      <!-- 4. Stok Habis -->
+      <Card class="relative border-slate-800 bg-slate-900/70 backdrop-blur-sm p-4 overflow-hidden">
+        <div class="absolute -top-1 -left-1 font-mono text-[9px] text-rose-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -top-1 -right-1 font-mono text-[9px] text-rose-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-rose-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-rose-600/40 select-none pointer-events-none">+</div>
+
         <div class="flex items-center justify-between">
           <div>
             <p class="text-xs font-medium text-rose-400 uppercase tracking-wider">
               Stok Habis (0)
             </p>
-            <p class="text-2xl font-bold text-slate-100 mt-1">
+            <p class="text-2xl sm:text-3xl font-extrabold font-mono text-rose-400 mt-1">
               {{ isLoading ? "-" : stats.out }}
             </p>
           </div>
@@ -618,7 +639,11 @@ onMounted(() => {
     </Alert>
 
     <!-- Toolbar Filter & Search -->
-    <Card class="border-slate-800 bg-slate-900/60 p-4">
+    <Card class="relative border-slate-800 bg-slate-900/70 backdrop-blur-sm p-4">
+      <div class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
       <div class="flex flex-col lg:flex-row gap-4 justify-between">
         <!-- Input Search -->
         <div class="relative flex-1">
@@ -687,7 +712,11 @@ onMounted(() => {
     </Card>
 
     <!-- Tabel Data Master Obat -->
-    <Card class="border-slate-800 bg-slate-900/60 overflow-hidden">
+    <Card class="relative border-slate-800 bg-slate-900/70 backdrop-blur-sm overflow-hidden">
+      <div class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
       <!-- Loading Skeleton State -->
       <div v-if="isLoading" class="p-6 space-y-4">
         <div v-for="i in 5" :key="i" class="flex items-center justify-between py-3 border-b border-slate-800/60 last:border-0">
@@ -885,6 +914,10 @@ onMounted(() => {
       @click.self="closeCreateModal"
     >
       <Card class="w-full max-w-lg border-slate-800 bg-slate-900 shadow-2xl p-6 relative">
+        <div class="absolute -top-1 -left-1 font-mono text-[9px] text-blue-500/40 select-none pointer-events-none">+</div>
+        <div class="absolute -top-1 -right-1 font-mono text-[9px] text-blue-500/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-blue-500/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-blue-500/40 select-none pointer-events-none">+</div>
         <div class="flex items-center justify-between pb-4 border-b border-slate-800">
           <div class="flex items-center gap-2.5">
             <div class="w-8 h-8 rounded-lg bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
@@ -1067,6 +1100,10 @@ onMounted(() => {
       @click.self="closeEditModal"
     >
       <Card class="w-full max-w-lg border-slate-800 bg-slate-900 shadow-2xl p-6 relative">
+        <div class="absolute -top-1 -left-1 font-mono text-[9px] text-teal-500/40 select-none pointer-events-none">+</div>
+        <div class="absolute -top-1 -right-1 font-mono text-[9px] text-teal-500/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-teal-500/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-teal-500/40 select-none pointer-events-none">+</div>
         <div class="flex items-center justify-between pb-4 border-b border-slate-800">
           <div class="flex items-center gap-2.5">
             <div class="w-8 h-8 rounded-lg bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
@@ -1242,7 +1279,11 @@ onMounted(() => {
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm"
       @click.self="closeStatusModal"
     >
-      <Card class="w-full max-w-md border-slate-800 bg-slate-900 shadow-2xl p-6">
+      <Card class="relative w-full max-w-md border-slate-800 bg-slate-900 shadow-2xl p-6">
+        <div class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-slate-600/40 select-none pointer-events-none">+</div>
+        <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-slate-600/40 select-none pointer-events-none">+</div>
         <div class="flex items-start gap-3">
           <div
             class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"

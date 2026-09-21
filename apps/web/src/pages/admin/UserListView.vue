@@ -359,16 +359,17 @@ onMounted(() => {
   <div class="space-y-6">
     <!-- Top Header -->
     <div
-      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800/80 pb-6"
+      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800/80 pb-5"
     >
       <div>
-        <div class="flex items-center gap-2.5">
-          <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-100">
-            Pengelolaan Akun Pengguna
-          </h1>
-          <Badge variant="primary" size="sm">Akses & Otentikasi</Badge>
+        <div class="flex items-center gap-2 mb-1">
+          <Badge variant="primary" size="sm" dot>Administrator</Badge>
+          <span class="text-xs text-slate-500 font-mono tracking-wider uppercase">Manajemen Akun</span>
         </div>
-        <p class="text-xs text-slate-400 mt-1">
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-100">
+          Pengelolaan Akun Pengguna
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
           Kelola akun staf medis (Dokter & Apoteker), hak akses sistem, reset password, dan status aktif login.
         </p>
       </div>
@@ -396,7 +397,11 @@ onMounted(() => {
     </div>
 
     <!-- Toolbar Filter & Search -->
-    <Card class="p-4">
+    <Card class="relative border-slate-800 bg-slate-900/70 backdrop-blur-sm p-4">
+      <div class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <!-- Search Bar -->
         <div class="relative flex-1 max-w-md">
@@ -536,7 +541,12 @@ onMounted(() => {
     </Card>
 
     <!-- Data Table -->
-    <Card v-else class="p-0 overflow-hidden border border-slate-800/80">
+    <Card v-else class="relative p-0 overflow-hidden border border-slate-800/80 bg-slate-900/70 backdrop-blur-sm">
+      <div class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+      <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-slate-700/60 select-none pointer-events-none">+</div>
+
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs text-slate-300">
           <thead class="bg-slate-950/80 text-slate-400 font-semibold uppercase tracking-wider text-2xs border-b border-slate-800">
@@ -720,6 +730,11 @@ onMounted(() => {
         @click.self="closeCreateModal"
       >
         <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-6 my-8">
+          <div class="absolute -top-1 -left-1 font-mono text-[9px] text-blue-500/40 select-none pointer-events-none">+</div>
+          <div class="absolute -top-1 -right-1 font-mono text-[9px] text-blue-500/40 select-none pointer-events-none">+</div>
+          <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-blue-500/40 select-none pointer-events-none">+</div>
+          <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-blue-500/40 select-none pointer-events-none">+</div>
+
           <!-- Modal Header -->
           <div class="flex items-center justify-between pb-4 border-b border-slate-800">
             <div>
@@ -883,7 +898,12 @@ onMounted(() => {
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm"
         @click.self="closeResetModal"
       >
-        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-6">
+        <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-6">
+          <div class="absolute -top-1 -left-1 font-mono text-[9px] text-amber-500/40 select-none pointer-events-none">+</div>
+          <div class="absolute -top-1 -right-1 font-mono text-[9px] text-amber-500/40 select-none pointer-events-none">+</div>
+          <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-amber-500/40 select-none pointer-events-none">+</div>
+          <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-amber-500/40 select-none pointer-events-none">+</div>
+
           <div class="flex items-center gap-3 text-amber-400 mb-3">
             <div class="p-2 rounded-lg bg-amber-950/50 border border-amber-800/80">
               <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -960,7 +980,12 @@ onMounted(() => {
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm"
         @click.self="closeStatusModal"
       >
-        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-6">
+        <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-6">
+          <div class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-600/40 select-none pointer-events-none">+</div>
+          <div class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-600/40 select-none pointer-events-none">+</div>
+          <div class="absolute -bottom-1 -left-1 font-mono text-[9px] text-slate-600/40 select-none pointer-events-none">+</div>
+          <div class="absolute -bottom-1 -right-1 font-mono text-[9px] text-slate-600/40 select-none pointer-events-none">+</div>
+
           <div class="flex items-center gap-3 mb-3" :class="userToToggle?.isActive ? 'text-rose-400' : 'text-emerald-400'">
             <div
               class="p-2 rounded-lg border"

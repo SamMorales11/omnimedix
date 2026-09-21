@@ -255,7 +255,7 @@ onMounted(() => {
   <div class="space-y-6">
     <!-- Top Bar: Back button & Title -->
     <div
-      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800/80 pb-4"
     >
       <div class="flex items-center gap-3">
         <Button
@@ -385,7 +385,9 @@ onMounted(() => {
     <!-- Loaded Content -->
     <div v-else-if="prescription" class="space-y-6">
       <!-- 1. Progress Step Tracker -->
-      <Card class="overflow-hidden">
+      <Card class="relative overflow-hidden bg-slate-900/70 border-slate-800 shadow-sm">
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
         <div class="py-1">
           <div
             class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4"
@@ -446,7 +448,9 @@ onMounted(() => {
       <!-- 2. Two-Column Info Cards: Patient Info & Doctor/Queue Info -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Patient Information Card -->
-        <Card title="Identitas Pasien">
+        <Card title="Identitas Pasien" class="relative overflow-hidden bg-slate-900/70 border-slate-800 shadow-sm">
+          <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+          <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
           <div class="space-y-4">
             <div
               class="flex items-center justify-between border-b border-slate-800/80 pb-3"
@@ -517,7 +521,9 @@ onMounted(() => {
         </Card>
 
         <!-- Doctor & Queue Information Card -->
-        <Card title="Dokter Peresep & Informasi Klinis">
+        <Card title="Dokter Peresep & Informasi Klinis" class="relative overflow-hidden bg-slate-900/70 border-slate-800 shadow-sm">
+          <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+          <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
           <div class="space-y-4">
             <div
               class="flex items-center justify-between border-b border-slate-800/80 pb-3"
@@ -588,7 +594,9 @@ onMounted(() => {
       </div>
 
       <!-- 3. Medicine Items List Table Card -->
-      <Card>
+      <Card class="relative overflow-hidden bg-slate-900/70 border-slate-800 shadow-sm">
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
         <template #header>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -692,7 +700,9 @@ onMounted(() => {
       </Card>
 
       <!-- 4. Status Action Controller Panel -->
-      <Card title="Aksi Status & Verifikasi Farmasi">
+      <Card title="Aksi Status & Verifikasi Farmasi" class="relative overflow-hidden bg-slate-900/70 border-slate-800 shadow-sm">
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
         <div class="space-y-4">
           <!-- Status: Pending -->
           <div
@@ -884,6 +894,25 @@ onMounted(() => {
           </div>
         </div>
       </Card>
+    </div>
+
+    <!-- Empty State jika Resep Tidak Ditemukan -->
+    <div v-else class="py-12">
+      <EmptyState
+        title="Detail Resep Tidak Ditemukan"
+        description="Data resep yang Anda tuju tidak ditemukan atau telah dihapus dari sistem."
+      >
+        <template #action>
+          <Button size="sm" variant="outline" @click="fetchPrescriptionDetail">
+            Coba Muat Ulang ⟳
+          </Button>
+          <router-link to="/pharmacist">
+            <Button size="sm" variant="primary">
+              Kembali ke Daftar Resep
+            </Button>
+          </router-link>
+        </template>
+      </EmptyState>
     </div>
 
     <!-- Modal Konfirmasi Penyerahan Obat (Taken) -->

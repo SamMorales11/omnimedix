@@ -456,6 +456,9 @@ onMounted(async () => {
     <div v-if="queueError" class="py-8">
       <EmptyState title="Antrean Tidak Ditemukan" :description="queueError">
         <template #action>
+          <Button size="sm" variant="outline" @click="fetchQueueData">
+            Coba Muat Ulang ⟳
+          </Button>
           <router-link to="/doctor">
             <Button size="sm" variant="primary">
               Kembali ke Daftar Antrean
@@ -486,8 +489,12 @@ onMounted(async () => {
     <div v-else-if="queue" class="space-y-6">
       <!-- 1. Header Ringkasan Pasien & Antrean -->
       <Card
-        class="p-6 border-slate-800 bg-slate-900/60 relative overflow-hidden"
+        class="p-6 border-slate-800 bg-slate-900/70 relative overflow-hidden shadow-sm"
       >
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -bottom-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -bottom-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
         <div
           class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
         >
@@ -642,7 +649,9 @@ onMounted(async () => {
       </Card>
 
       <!-- 2. Bagian Pencatatan Diagnosis & Catatan Medis -->
-      <Card class="p-6 border-slate-800 bg-slate-900/60 space-y-4">
+      <Card class="p-6 border-slate-800 bg-slate-900/70 space-y-4 relative overflow-hidden shadow-sm">
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
         <div
           class="flex items-center justify-between border-b border-slate-800/80 pb-3"
         >
@@ -750,7 +759,9 @@ onMounted(async () => {
       </Card>
 
       <!-- 3. Bagian Penulisan & Penerbitan E-Resep Farmasi -->
-      <Card class="p-6 border-slate-800 bg-slate-900/60 space-y-5">
+      <Card class="p-6 border-slate-800 bg-slate-900/70 space-y-5 relative overflow-hidden shadow-sm">
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
         <div
           class="flex items-center justify-between border-b border-slate-800/80 pb-3"
         >
@@ -794,8 +805,19 @@ onMounted(async () => {
           </div>
         </div>
 
+        <!-- JIKA SEDANG MEMUAT STATUS RESEP -->
+        <div v-if="isLoadingPrescription" class="space-y-3 py-2">
+          <div class="flex items-center gap-3 p-4 rounded-xl border border-slate-800 bg-slate-900/40">
+            <Skeleton width="36px" height="36px" variant="rounded" />
+            <div class="space-y-2 flex-1">
+              <Skeleton width="45%" height="14px" />
+              <Skeleton width="75%" height="12px" />
+            </div>
+          </div>
+        </div>
+
         <!-- JIKA RESEP SUDAH DITERBITKAN -->
-        <div v-if="existingPrescription" class="space-y-4">
+        <div v-else-if="existingPrescription" class="space-y-4">
           <div
             class="p-4 rounded-xl border border-emerald-900/70 bg-emerald-950/25 flex items-center justify-between"
           >

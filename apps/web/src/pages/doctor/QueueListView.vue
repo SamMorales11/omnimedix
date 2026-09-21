@@ -485,12 +485,12 @@ onUnmounted(() => {
   <div class="space-y-6">
     <!-- Header Section -->
     <div
-      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800/80 pb-5"
     >
       <div>
-        <div class="flex items-center gap-2 mb-1">
+        <div class="flex items-center gap-2 mb-1.5">
           <Badge variant="primary" dot>Konsol Praktik</Badge>
-          <span class="text-xs text-slate-400"
+          <span class="text-xs text-slate-500 font-mono"
             >• {{ formatCurrentDate() }}</span
           >
         </div>
@@ -499,22 +499,22 @@ onUnmounted(() => {
         >
           Daftar Antrean Pasien
         </h1>
-        <p class="text-xs sm:text-sm text-slate-400 mt-1">
-          Kelola antrean klinis, lakukan pemeriksaan medis, dan terbitkan resep
-          obat untuk pasien hari ini.
+        <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+          Pantau antrean rawat jalan secara real-time, lakukan pemeriksaan medis, dan terbitkan resep obat langsung ke Unit Farmasi.
         </p>
       </div>
 
-      <div class="flex items-center gap-2 self-start sm:self-auto">
+      <div class="flex items-center gap-2.5 self-start sm:self-auto">
         <Button
           variant="outline"
           size="sm"
           :loading="isRefreshing"
           @click="fetchTodayQueues(true)"
           title="Perbarui daftar antrean"
+          class="gap-1.5"
         >
           <svg
-            :class="['h-4 w-4 mr-1.5', isRefreshing ? 'animate-spin' : '']"
+            :class="['h-3.5 w-3.5', isRefreshing ? 'animate-spin' : '']"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -549,37 +549,43 @@ onUnmounted(() => {
     </Alert>
 
     <!-- Quick Metric Cards -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4">
       <!-- Total -->
       <Card
-        class="relative overflow-hidden border-slate-800 bg-slate-900/60 p-4"
+        class="relative overflow-hidden border-slate-800 bg-slate-900/70 p-4 sm:p-5"
       >
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
         <div class="text-xs font-medium text-slate-400">Total Pasien</div>
-        <div class="text-2xl sm:text-3xl font-extrabold text-slate-100 mt-1">
+        <div class="text-2xl sm:text-3xl font-extrabold text-slate-100 mt-1 font-mono">
           <Skeleton v-if="isLoading" width="40px" height="32px" />
           <span v-else>{{ totalCount }}</span>
         </div>
-        <div class="text-[11px] text-slate-500 mt-1">Terdaftar hari ini</div>
+        <div class="text-[11px] text-slate-500 mt-1.5">Terdaftar hari ini</div>
       </Card>
 
       <!-- Menunggu -->
       <Card
-        class="relative overflow-hidden border-amber-900/40 bg-amber-950/10 p-4"
+        class="relative overflow-hidden border-amber-900/50 bg-amber-950/15 p-4 sm:p-5"
       >
-        <div class="text-xs font-medium text-amber-300/80">Menunggu</div>
-        <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 mt-1">
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-amber-600/40 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-amber-600/40 select-none pointer-events-none">+</span>
+        <div class="text-xs font-medium text-amber-300/90">Menunggu</div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 mt-1 font-mono">
           <Skeleton v-if="isLoading" width="40px" height="32px" />
           <span v-else>{{ waitingCount }}</span>
         </div>
-        <div class="text-[11px] text-amber-400/60 mt-1">Perlu dipanggil</div>
+        <div class="text-[11px] text-amber-400/70 mt-1.5">Perlu dipanggil</div>
       </Card>
 
       <!-- Sedang Diperiksa -->
       <Card
-        class="relative overflow-hidden border-blue-900/40 bg-blue-950/10 p-4"
+        class="relative overflow-hidden border-blue-900/50 bg-blue-950/15 p-4 sm:p-5"
       >
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-blue-600/40 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-blue-600/40 select-none pointer-events-none">+</span>
         <div
-          class="flex items-center gap-1.5 text-xs font-medium text-blue-300/80"
+          class="flex items-center gap-1.5 text-xs font-medium text-blue-300/90"
         >
           <span class="relative flex h-2 w-2">
             <span
@@ -591,25 +597,27 @@ onUnmounted(() => {
           </span>
           Sedang Diperiksa
         </div>
-        <div class="text-2xl sm:text-3xl font-extrabold text-blue-400 mt-1">
+        <div class="text-2xl sm:text-3xl font-extrabold text-blue-400 mt-1 font-mono">
           <Skeleton v-if="isLoading" width="40px" height="32px" />
           <span v-else>{{ inProgressCount }}</span>
         </div>
-        <div class="text-[11px] text-blue-400/60 mt-1">
+        <div class="text-[11px] text-blue-400/70 mt-1.5">
           Aktif di ruang dokter
         </div>
       </Card>
 
       <!-- Selesai -->
       <Card
-        class="relative overflow-hidden border-emerald-900/40 bg-emerald-950/10 p-4"
+        class="relative overflow-hidden border-emerald-900/50 bg-emerald-950/15 p-4 sm:p-5"
       >
-        <div class="text-xs font-medium text-emerald-300/80">Selesai</div>
-        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-1">
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-emerald-600/40 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-emerald-600/40 select-none pointer-events-none">+</span>
+        <div class="text-xs font-medium text-emerald-300/90">Selesai</div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-1 font-mono">
           <Skeleton v-if="isLoading" width="40px" height="32px" />
           <span v-else>{{ completedCount }}</span>
         </div>
-        <div class="text-[11px] text-emerald-400/60 mt-1">
+        <div class="text-[11px] text-emerald-400/70 mt-1.5">
           Pemeriksaan tuntas
         </div>
       </Card>
@@ -776,7 +784,11 @@ onUnmounted(() => {
     </Card>
 
     <!-- Content Queue Table / List -->
-    <Card class="border-slate-800 bg-slate-900/60 overflow-hidden">
+    <Card class="relative border-slate-800 bg-slate-900/70 overflow-hidden">
+      <span class="absolute -top-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+      <span class="absolute -top-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+      <span class="absolute -bottom-1 -left-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
+      <span class="absolute -bottom-1 -right-1 font-mono text-[9px] text-slate-700 select-none pointer-events-none">+</span>
       <!-- Loading State -->
       <div v-if="isLoading" class="p-4 space-y-3">
         <div

@@ -34,8 +34,24 @@ const pageTitle = computed(
     <div class="flex-1 flex flex-col min-w-0">
       <!-- Topbar Header -->
       <header
-        class="h-16 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-6 lg:px-8 flex items-center justify-between"
+        class="h-16 border-b border-slate-800/80 bg-slate-950/85 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-6 lg:px-8 flex items-center justify-between relative"
       >
+        <!-- Track Garis Bawah Pixelated (Halus & Presisi Medis) -->
+        <div
+          class="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-[repeating-linear-gradient(90deg,#2563eb_0px,#2563eb_4px,transparent_4px,transparent_8px)] opacity-35 pointer-events-none select-none"
+          aria-hidden="true"
+        ></div>
+        <span
+          class="absolute -bottom-[6px] left-4 font-mono text-[10px] font-bold text-blue-500/70 select-none pointer-events-none"
+          aria-hidden="true"
+          >+</span
+        >
+        <span
+          class="absolute -bottom-[6px] right-4 font-mono text-[10px] font-bold text-blue-500/70 select-none pointer-events-none"
+          aria-hidden="true"
+          >+</span
+        >
+
         <!-- Left: Mobile Menu Trigger + Breadcrumb/Title -->
         <div class="flex items-center gap-3">
           <button

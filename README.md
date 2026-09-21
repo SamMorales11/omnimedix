@@ -105,16 +105,19 @@ VITE_API_BASE_URL="http://localhost:3000"
 
 ### 4. Menjalankan Database Migration & Seed
 
-Terapkan skema database dan masukkan data awal (poliklinik, akun demo, dokter spesialis, obat-obatan):
+Terapkan skema database dan masukkan data awal yang realistis untuk pengujian komprehensif (4 poliklinik, 12 akun pengguna, 12 profil pasien, 21 katalog obat, 28 antrean, 8 resep medis, dan riwayat mutasi stok):
 
 ```bash
 # A. Terapkan skema database ke PostgreSQL Neon
 pnpm db:push
 
-# B. Masukkan data awal (Admin, Dokter, Apoteker, Poli, Obat)
+# B. Masukkan data awal (Mode Idempotent - aman dijalankan berulang kali tanpa menduplikasi data)
 pnpm db:seed
 
-# C. (Opsional) Buka antarmuka Drizzle Studio GUI di browser
+# C. Reset bersih dan seed ulang dari awal (Mode Fresh)
+pnpm db:seed:fresh
+
+# D. (Opsional) Buka antarmuka Drizzle Studio GUI di browser
 pnpm db:studio
 ```
 
@@ -137,81 +140,95 @@ pnpm dev:web    # Hanya Frontend Web (http://localhost:5173)
 
 ---
 
-## 🔑 Akun Pengujian Demo (Test Credentials)
+## 🔑 Akun Pengujian Testing (Demo Credentials)
 
-Database seed telah menyediakan 3 akun pengujian utama dengan peran berbeda. Anda dapat login manual atau menggunakan tombol quick-fill (Demo Account) di halaman login:
+Database seed telah dilengkapi dengan **12 akun pengujian** yang siap digunakan untuk berbagai skenario rumah sakit dan poliklinik:
 
-| Peran | Email | Kata Sandi | Halaman Utama | Deskripsi Wewenang |
-| :--- | :--- | :--- | :--- | :--- |
-| **Dokter** | `dokter@omnimedix.local` | `Dokter123!` | `/doctor` | Pemeriksaan pasien, diagnosis, & peresepan obat elektronik |
-| **Apoteker** | `apoteker@omnimedix.local` | `Apoteker123!` | `/pharmacist` | Penyiapan resep obat, penyerahan obat, & kelola stok |
-| **Admin** | `admin@omnimedix.local` | `Admin123!` | `/admin` | Dashboard rumah sakit, CRUD pasien, dokter, akun, & obat |
+### 1. Administrator Sistem (Akses Penuh Master Data)
+| Nama Akun | Email | Kata Sandi | Deskripsi Wewenang |
+| :--- | :--- | :--- | :--- |
+| **Administrator Omnimedix** | `admin@omnimedix.local` | `Admin123!` | Super Admin, Dashboard Rumah Sakit, CRUD User & Master Data |
+| **Rizka Amelia, S.Kom** | `admin.klinik@omnimedix.local` | `Admin123!` | Administrasi Operasional RS & Manajemen Pasien |
+
+### 2. Dokter Poliklinik (Pemeriksaan Medis & E-Resep)
+| Nama Dokter | Email | Kata Sandi | Poliklinik & Spesialisasi |
+| :--- | :--- | :--- | :--- |
+| **dr. Budi Santoso, Sp.PD** | `dokter@omnimedix.local` | `Dokter123!` | Poli Umum / Penyakit Dalam |
+| **dr. Farhan Maulana** | `dr.farhan@omnimedix.local` | `Dokter123!` | Poli Umum (Layanan Primer) |
+| **drg. Nadia Sarah, Sp.KG** | `dr.nadia@omnimedix.local` | `Dokter123!` | Poli Gigi & Mulut (Konservasi Gigi) |
+| **drg. Rizky Pratama** | `drg.rizky@omnimedix.local` | `Dokter123!` | Poli Gigi & Mulut (Estetika Gigi) |
+| **dr. Anisa Rahmawati, Sp.A** | `dr.anisa@omnimedix.local` | `Dokter123!` | Poli Anak (Pediatri & Tumbuh Kembang) |
+| **dr. Hendra Gunawan, Sp.PD** | `dr.hendra@omnimedix.local` | `Dokter123!` | Poli Penyakit Dalam (Internist) |
+
+### 3. Tenaga Farmasi / Apoteker (Dispensing & Manajemen Stok)
+| Nama Apoteker | Email | Kata Sandi | Posisi / Unit |
+| :--- | :--- | :--- | :--- |
+| **Siti Aminah, S.Farm., Apt.** | `apoteker@omnimedix.local` | `Apoteker123!` | Kepala Instalasi Farmasi |
+| **Rahmat Hidayat, S.Farm., Apt.** | `apoteker.rahmat@omnimedix.local` | `Apoteker123!` | Apoteker Pelayanan Resep |
+| **Diana Kusuma, S.Farm., Apt.** | `apoteker.diana@omnimedix.local` | `Apoteker123!` | Apoteker Pengendali Stok |
+| **Fajar Ramadhan, S.Farm.** | `apoteker.fajar@omnimedix.local` | `Apoteker123!` | Tenaga Teknis Kefarmasian |
+
+> [!TIP]
+> Di halaman login (`/auth/login`), tersedia tombol **Quick Fill Demo** untuk Dokter, Apoteker, dan Admin untuk kemudahan testing tanpa perlu mengetik kredensial secara manual.
 
 ---
 
-## 🧪 Checklist Pengujian End-to-End (E2E) Alur Utama
+## 🧪 Alur Utama Sistem yang Siap Diuji (End-to-End)
 
-Berikut adalah panduan pengujian alur bisnis menyeluruh (end-to-end) sistem OmniMedix dari sisi pasien hingga tenaga medis dan administrator:
+Omnimedix telah diuji dan distabilkan secara end-to-end (`pnpm test:e2e`). Anda dapat memverifikasi skenario berikut:
 
 ### 1. Alur Pasien: Pendaftaran Antrean Online (Public Booking)
-- [ ] Buka halaman utama [http://localhost:5173](http://localhost:5173) dan klik tombol **Daftar Antrean Sekarang** (mengarahkan ke `/booking`).
-- [ ] **Langkah 1 (Pilih Poli & Dokter)**: Pilih poliklinik tujuan (misal: *Poli Umum*) dan pilih dokter yang bertugas. Verifikasi kuota antrean dan jadwal praktik ditampilkan.
-- [ ] **Langkah 2 (Data Pasien)**: Masukkan NIK (16 digit), Nama Lengkap, Tanggal Lahir / Umur, Jenis Kelamin, dan Nomor Telepon.
-- [ ] **Langkah 3 (Konfirmasi & Submit)**: Klik **Konfirmasi & Daftarkan Antrean**.
-- [ ] Verifikasi modal atau kartu sukses pendaftaran muncul menampilkan **Kode Booking** (misal: `BK-XXXXXX`) dan **Nomor Antrean** (misal: `A-001`).
-- [ ] Klik **Unduh Bukti (PNG)** atau **Cetak Tiket** untuk memvalidasi fitur pembuatan tiket antrean visual.
+- [ ] Buka [http://localhost:5173](http://localhost:5173) dan klik **Daftar Antrean Sekarang** (atau langsung ke `/booking`).
+- [ ] **Langkah 1**: Pilih poliklinik tujuan (misal: *Poli Umum* atau *Poli Penyakit Dalam*) dan pilih dokter bertugas.
+- [ ] **Langkah 2**: Lengkapi data pasien (NIK 16 digit, Nama, Tanggal Lahir, Jenis Kelamin, No. HP). Jika pasien sudah pernah berobat, data Rekam Medis (No. RM) akan otomatis dihubungkan.
+- [ ] **Langkah 3**: Konfirmasi data dan daftarkan antrean.
+- [ ] Dapatkan **Kode Booking** (contoh: `BK-XXXXXX`) dan **Nomor Antrean** (contoh: `A-008`).
+- [ ] Klik **Unduh Bukti (PNG)** untuk mengunduh tiket kartu antrean yang digenerate langsung melalui HTML5 Canvas.
 
-### 2. Alur Pasien: Lacak Status Antrean (Queue Tracking)
+### 2. Alur Pasien: Lacak Status Antrean Real-Time (Queue Tracking)
 - [ ] Buka menu **Lacak Antrean** di navbar publik (`/track-queue`).
-- [ ] Masukkan Kode Booking yang didapatkan dari pendaftaran sebelumnya (misal: `BK-XXXXXX`) lalu klik tombol cari.
-- [ ] Verifikasi detail antrean ditampilkan: Nomor antrean, nama poli, nama dokter, status saat ini (*Menunggu*, *Sedang Diperiksa*, *Selesai*), estimasi waktu, serta informasi pasien (dengan sensor NIK/Nama untuk privasi).
-- [ ] Klik tombol **Cetak / Unduh Bukti** untuk membuka modal tiket antrean dan unduh kartu PNG / cetak format thermal.
+- [ ] Masukkan kode booking yang didapatkan dari pendaftaran sebelumnya (misal: `BK-XXXXXX`).
+- [ ] Pantau status antrean secara real-time (*Menunggu*, *Sedang Diperiksa*, *Selesai*), nomor antrean yang sedang dipanggil dokter, estimasi jam pelayanan, serta opsi cetak/unduh ulang bukti tiket.
 
 ### 3. Alur Autentikasi & Role-Based Access Control (RBAC)
-- [ ] Buka halaman login di `/auth/login`.
-- [ ] Coba klik salah satu tombol preset demo (misal: *Dokter*), pastikan form terisi otomatis, lalu klik **Masuk ke Sistem**.
-- [ ] Verifikasi pengalihan otomatis ke dashboard yang sesuai peran (`/doctor`, `/pharmacist`, atau `/admin`).
-- [ ] **Uji Router Guard**: Saat login sebagai Dokter, ketikkan `/admin` atau `/pharmacist` di address bar browser. Verifikasi bahwa sistem otomatis menolak akses dan mengembalikan ke `/doctor`.
-- [ ] **Uji Guest Guard**: Saat posisi login, buka `/auth/login`. Verifikasi sistem mengarahkan kembali ke dashboard peran aktif.
-- [ ] Klik tombol **Keluar** (Logout) di sidebar / navbar, verifikasi token dihapus dan dialihkan ke `/auth/login`.
+- [ ] Buka `/auth/login` dan gunakan tombol cepat untuk login sebagai salah satu peran.
+- [ ] Sistem akan mengarahkan pengguna ke rute dashboard sesuai peran:
+  - Admin → `/admin`
+  - Dokter → `/doctor`
+  - Apoteker → `/pharmacist`
+- [ ] **Uji Perlindungan Rute (Router Guard)**:
+  - Coba akses URL silang peran (misal: login sebagai Dokter lalu ketik `/admin` di URL). Sistem akan otomatis memblokir dan mengarahkan kembali ke dashboard yang diizinkan.
+  - Akses `/auth/login` saat sudah login akan langsung dialihkan ke dashboard peran terkait tanpa perlu login ulang.
+- [ ] Klik **Keluar** (Logout) di sidebar dashboard; sesi akan dibersihkan dan dialihkan kembali ke login.
 
-### 4. Alur Dokter (Pemeriksaan Medis & E-Prescription)
+### 4. Alur Dokter: Pemeriksaan Medis & E-Prescription
 - [ ] Login sebagai **Dokter** (`dokter@omnimedix.local` / `Dokter123!`).
-- [ ] Pada dashboard `/doctor`, periksa daftar antrean hari ini (`QueueListView`).
-- [ ] Pilih salah satu antrean berstatus *Menunggu*, lalu klik untuk membuka detail antrean (`QueueDetailView`).
-- [ ] Klik tombol **Panggil Pasien / Mulai Periksa** (status berubah menjadi *Sedang Diperiksa / in_progress*).
-- [ ] Masukkan **Diagnosis** (misal: *Faringitis Akut*) dan **Catatan Penanganan / Instruksi**. Klik **Simpan Rekam Medis**.
-- [ ] Tambahkan resep obat elektronik: pilih obat dari daftar obat aktif, tentukan kuantitas, dosis (misal: *3x1 tablet*), dan instruksi pemakaian.
-- [ ] Klik **Kirim Resep ke Farmasi** (membuat e-resep dan meneruskannya ke modul Apoteker).
-- [ ] Klik tombol **Selesaikan Pemeriksaan** (status antrean berubah menjadi *Selesai / completed*).
+- [ ] Pada `/doctor`, periksa antrean hari ini (`QueueListView`) yang telah dilengkapi kartu statistik ringkasan, filter pencarian, dan state skeleton.
+- [ ] Pilih salah satu antrean pasien yang berstatus *Menunggu*, lalu klik untuk masuk ke **Detail Pemeriksaan** (`QueueDetailView`).
+- [ ] Klik **Panggil Pasien / Mulai Periksa** (status berubah menjadi *Sedang Diperiksa / in_progress*).
+- [ ] Masukkan **Diagnosis** pasien (misal: *Faringitis Akut*) dan catatan pemeriksaan, lalu simpan.
+- [ ] Tambahkan obat pada **Form Resep Elektronik**: pilih obat dari daftar stok, kuantitas, dosis, dan petunjuk pemakaian.
+- [ ] Klik **Kirim Resep ke Farmasi** untuk menerbitkan resep elektronik.
+- [ ] Klik **Selesaikan Pemeriksaan** (status antrean berubah menjadi *Selesai / completed*).
 
-### 5. Alur Apoteker (Dispensing Resep & Manajemen Stok Obat)
+### 5. Alur Apoteker: Dispensing Resep & Manajemen Stok Obat
 - [ ] Login sebagai **Apoteker** (`apoteker@omnimedix.local` / `Apoteker123!`).
-- [ ] Pada menu **Antrean Resep** (`/pharmacist/prescriptions`), verifikasi resep yang baru saja diterbitkan oleh dokter muncul dengan status *Menunggu / pending*.
+- [ ] Pada menu **Antrean Resep** (`/pharmacist/prescriptions`), temukan resep yang diterbitkan dokter (status: *Menunggu / pending*).
 - [ ] Buka detail resep (`PrescriptionDetailView`).
-- [ ] Klik **Proses Penyiapan Obat** (status berubah menjadi *Sedang Disiapkan / preparing*).
-- [ ] Setelah obat selesai diracik/dikemas, klik **Tandai Siap Diambil** (status berubah menjadi *Siap Diambil / ready*).
-- [ ] Saat pasien menyerahkan bukti nomor antrean di loket farmasi, serahkan obat dan klik **Serahkan ke Pasien** (status berubah menjadi *Telah Diserahkan / taken*).
+- [ ] Klik **Proses Penyiapan Obat** (status menjadi *Sedang Disiapkan / preparing*).
+- [ ] Setelah selesai diracik, klik **Tandai Siap Diambil** (status menjadi *Siap Diambil / ready*).
+- [ ] Saat pasien mengambil obat di loket apotek, serahkan obat dan klik **Serahkan ke Pasien** (status menjadi *Telah Diserahkan / taken*).
 - [ ] Buka menu **Kelola Stok Obat** (`/pharmacist/medicines`) dan **Pencatatan Stok Masuk** (`/pharmacist/stock-in`):
-  - Masukkan mutasi stok masuk (Restock dari distributor).
-  - Verifikasi jumlah stok terupdate secara otomatis dan tercatat di riwayat mutasi stok (`/pharmacist/reports`).
+  - Catat mutasi penerimaan obat masuk dari distributor.
+  - Stok obat akan bertambah secara otomatis dan tercatat pada riwayat audit di **Laporan Stok** (`/pharmacist/reports`).
 
-### 6. Alur Admin (Master Data & Manajemen Sistem)
+### 6. Alur Administrator: Dashboard, Manajemen Pengguna & Master Data
 - [ ] Login sebagai **Admin** (`admin@omnimedix.local` / `Admin123!`).
-- [ ] Buka **Dashboard Admin** (`/admin`):
-  - Periksa indikator ringkasan: Total Antrean Hari Ini, Pasien Terdaftar, Dokter Aktif, Obat Stok Rendah, dan Resep Aktif.
-  - Periksa log aktivitas sistem terbaru.
-- [ ] Buka menu **Data Pasien** (`/admin/patients`):
-  - Uji fitur pencarian pasien berdasarkan nama / NIK.
-  - Uji penambahan pasien baru, edit data pasien, serta tombol aktifkan/nonaktifkan status pasien.
-- [ ] Buka menu **Data Dokter** (`/admin/doctors`):
-  - Lihat daftar dokter beserta poli terkait.
-  - Uji penambahan dokter baru (terintegrasi dengan akun login dokter) dan toggle aktif/nonaktif praktik.
-- [ ] Buka menu **Kelola Akun** (`/admin/users`):
-  - Filter daftar pengguna berdasarkan peran (*DOKTER* atau *APOTEKER*).
-  - Tambah akun tenaga medis baru, reset kata sandi, dan toggle status akun aktif/nonaktif.
-- [ ] Buka menu **Master Obat** (`/admin/medicines`):
-  - Tambah master obat baru, ubah kategori/satuan/harga/stok minimum, serta toggle status obat.
+- [ ] Buka **Dashboard Admin** (`/admin`): pantau metrik utama (total antrean, jumlah dokter aktif, total pasien, resep aktif, dan obat stok menipis) beserta log aktivitas.
+- [ ] Buka **Kelola Pasien** (`/admin/patients`): lakukan penambahan, pencarian, dan pembaruan data pasien.
+- [ ] Buka **Kelola Dokter** (`/admin/doctors`): kelola profil dokter, spesialisasi, dan jadwal poli.
+- [ ] Buka **Kelola Akun** (`/admin/users`): tambah akun staf baru (Dokter/Apoteker) dan reset kata sandi.
+- [ ] Buka **Master Obat** (`/admin/medicines`): tambah katalog obat baru, atur ambang batas stok minimum, serta pantau ketersediaan.
 
 ---
 
@@ -226,9 +243,10 @@ Berikut adalah panduan pengujian alur bisnis menyeluruh (end-to-end) sistem Omni
 | `pnpm typecheck` | Menjalankan pemeriksaan tipe TypeScript mode strict (`--noEmit`) |
 | `pnpm test:e2e` | Menjalankan pengujian otomatis 6 alur end-to-end terintegrasi |
 | `pnpm db:generate` | Menghasilkan berkas migrasi SQL Drizzle dari skema TypeScript |
-| `pnpm db:push` | Menerapkan skema Drizzle langsung ke basis data PostgreSQL |
+| `pnpm db:push` | Menerapkan skema Drizzle langsung ke basis data PostgreSQL Neon |
 | `pnpm db:migrate` | Menjalankan migrasi SQL Drizzle |
-| `pnpm db:seed` | Menjalankan seeding data demo ke basis data |
+| `pnpm db:seed` | Menjalankan seeding data demo (Idempotent) |
+| `pnpm db:seed:fresh` | Membersihkan data lama dan melakukan seed ulang dari awal |
 | `pnpm db:studio` | Membuka antarmuka Drizzle Studio GUI di peramban |
 | `pnpm format` | Memformat seluruh kode sumber menggunakan Prettier |
 | `pnpm lint` | Menjalankan linter ESLint pada seluruh berkas workspace |

@@ -160,23 +160,23 @@ onMounted(() => {
   <div class="space-y-6">
     <!-- Header Section -->
     <div
-      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800/80 pb-5"
     >
       <div>
-        <div class="flex items-center gap-3">
-          <h1 class="text-2xl font-bold tracking-tight text-slate-100">
-            Laporan Ketersediaan Stok Obat
-          </h1>
-          <Badge variant="info">Unit Farmasi</Badge>
+        <div class="flex items-center gap-2 mb-1.5">
+          <Badge variant="info" dot>Unit Farmasi</Badge>
+          <span class="text-xs text-slate-500 font-mono">• Analisis Inventaris</span>
         </div>
-        <p class="text-xs text-slate-400 mt-1">
-          Ikhtisar stok obat, pemantauan batas minimum, dan deteksi dini obat
-          yang habis atau menipis.
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-100">
+          Laporan Ketersediaan Stok Obat
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+          Ikhtisar stok obat, pemantauan batas minimum, dan deteksi dini obat yang habis atau menipis di Instalasi Farmasi.
         </p>
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex flex-wrap items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2.5">
         <Button
           variant="secondary"
           size="sm"
@@ -261,22 +261,24 @@ onMounted(() => {
       </Card>
     </div>
 
-    <div v-else-if="reportData" class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+    <div v-else-if="reportData" class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4">
       <!-- Total Obat -->
       <Card
-        class="cursor-pointer transition-colors"
+        class="relative overflow-hidden cursor-pointer transition-all p-4 sm:p-5"
         :class="
           !filterLowStockOnly
-            ? 'ring-2 ring-blue-500/50 bg-slate-900'
-            : 'hover:border-slate-700'
+            ? 'ring-2 ring-blue-500/60 bg-blue-950/20 border-blue-800/60'
+            : 'hover:border-slate-700 bg-slate-900/70 border-slate-800'
         "
         @click="toggleLowStockFilter(false)"
       >
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-blue-600/40 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-blue-600/40 select-none pointer-events-none">+</span>
         <div class="flex items-center justify-between">
           <span class="text-xs text-slate-400 font-medium">Total Obat</span>
           <span class="h-2 w-2 rounded-full bg-blue-400" />
         </div>
-        <div class="text-2xl font-extrabold text-slate-100 mt-1.5">
+        <div class="text-2xl sm:text-3xl font-extrabold text-slate-100 mt-1.5 font-mono">
           {{ reportData.summary.totalMedicines }}
         </div>
         <div class="text-[11px] text-slate-500 mt-1">Seluruh jenis obat</div>
@@ -284,15 +286,17 @@ onMounted(() => {
 
       <!-- Stok Normal -->
       <Card
-        class="cursor-pointer transition-colors"
-        :class="!filterLowStockOnly ? 'hover:border-slate-700' : ''"
+        class="relative overflow-hidden cursor-pointer transition-all p-4 sm:p-5"
+        :class="!filterLowStockOnly ? 'hover:border-slate-700 bg-slate-900/70 border-slate-800' : 'bg-slate-900/50 border-slate-800'"
         @click="toggleLowStockFilter(false)"
       >
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-emerald-600/40 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-emerald-600/40 select-none pointer-events-none">+</span>
         <div class="flex items-center justify-between">
-          <span class="text-xs text-slate-400 font-medium">Stok Normal</span>
+          <span class="text-xs text-emerald-300/90 font-medium">Stok Normal</span>
           <span class="h-2 w-2 rounded-full bg-emerald-400" />
         </div>
-        <div class="text-2xl font-extrabold text-emerald-400 mt-1.5">
+        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-1.5 font-mono">
           {{ reportData.summary.normalStockCount }}
         </div>
         <div class="text-[11px] text-slate-500 mt-1">Aman di atas minimum</div>
@@ -300,19 +304,21 @@ onMounted(() => {
 
       <!-- Stok Rendah / Menipis -->
       <Card
-        class="cursor-pointer transition-colors"
+        class="relative overflow-hidden cursor-pointer transition-all p-4 sm:p-5"
         :class="
           filterLowStockOnly
-            ? 'ring-2 ring-amber-500/50 bg-slate-900'
-            : 'hover:border-slate-700'
+            ? 'ring-2 ring-amber-500/60 bg-amber-950/20 border-amber-800/60'
+            : 'hover:border-slate-700 bg-slate-900/70 border-slate-800'
         "
         @click="toggleLowStockFilter(true)"
       >
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-amber-600/40 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-amber-600/40 select-none pointer-events-none">+</span>
         <div class="flex items-center justify-between">
-          <span class="text-xs text-slate-400 font-medium">Stok Rendah</span>
+          <span class="text-xs text-amber-300/90 font-medium">Stok Rendah</span>
           <span class="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
         </div>
-        <div class="text-2xl font-extrabold text-amber-400 mt-1.5">
+        <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 mt-1.5 font-mono">
           {{ reportData.summary.lowStockCount }}
         </div>
         <div class="text-[11px] text-slate-500 mt-1">&le; batas minimum</div>
@@ -320,19 +326,21 @@ onMounted(() => {
 
       <!-- Stok Habis -->
       <Card
-        class="cursor-pointer transition-colors"
+        class="relative overflow-hidden cursor-pointer transition-all p-4 sm:p-5"
         :class="
           filterLowStockOnly
-            ? 'ring-2 ring-rose-500/50 bg-slate-900'
-            : 'hover:border-slate-700'
+            ? 'ring-2 ring-rose-500/60 bg-rose-950/20 border-rose-800/60'
+            : 'hover:border-slate-700 bg-slate-900/70 border-slate-800'
         "
         @click="toggleLowStockFilter(true)"
       >
+        <span class="absolute -top-1 -left-1 font-mono text-[9px] text-rose-600/40 select-none pointer-events-none">+</span>
+        <span class="absolute -top-1 -right-1 font-mono text-[9px] text-rose-600/40 select-none pointer-events-none">+</span>
         <div class="flex items-center justify-between">
-          <span class="text-xs text-slate-400 font-medium">Stok Habis</span>
+          <span class="text-xs text-rose-300/90 font-medium">Stok Habis</span>
           <span class="h-2 w-2 rounded-full bg-rose-400 animate-pulse" />
         </div>
-        <div class="text-2xl font-extrabold text-rose-400 mt-1.5">
+        <div class="text-2xl sm:text-3xl font-extrabold text-rose-400 mt-1.5 font-mono">
           {{ reportData.summary.outOfStockCount }}
         </div>
         <div class="text-[11px] text-slate-500 mt-1">Perlu restock segera</div>
