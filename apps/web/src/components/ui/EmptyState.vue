@@ -2,6 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { computed } from "vue";
 import { cn } from "../../utils/cn";
+import omnimedixLogo from "../../assets/omnimedix logo.png";
 
 export interface EmptyStateProps {
   title: string;
@@ -23,24 +24,17 @@ const containerClasses = computed(() =>
   <div :class="containerClasses">
     <!-- Icon or Clinical Illustration Slot -->
     <div
-      class="h-12 w-12 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-400 mb-4 shadow-sm shrink-0"
+      class="h-12 w-12 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-400 mb-4 shadow-sm shrink-0 overflow-hidden"
       aria-hidden="true"
     >
       <slot name="icon">
-        <svg
-          class="h-6 w-6 text-slate-400"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="1.75"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
+        <div class="w-8 h-8 rounded-lg bg-slate-950/90 border border-slate-700/80 flex items-center justify-center overflow-hidden shadow-inner p-1">
+          <img
+            :src="omnimedixLogo"
+            alt="Omnimedix"
+            class="w-full h-full object-contain scale-[1.32] opacity-75 grayscale-[20%]"
           />
-        </svg>
+        </div>
       </slot>
     </div>
 

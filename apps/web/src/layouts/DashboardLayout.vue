@@ -76,7 +76,7 @@ const pageTitle = computed(
             </svg>
           </button>
 
-          <AppLogo size="xs" :show-text="false" class="lg:hidden" />
+          <AppLogo size="xs" :show-text="false" :clickable="false" />
 
           <div>
             <h1 class="text-sm font-semibold tracking-tight text-slate-100 m-0">

@@ -598,14 +598,18 @@ onMounted(() => {
           ]"
         >
           <div class="flex items-start justify-between gap-2 mb-2">
-            <h3
-              class="text-sm font-semibold text-slate-100 group-hover:text-blue-400 transition-colors"
-            >
-              {{ poli.name }}
-            </h3>
+            <div class="flex items-center gap-2.5 min-w-0">
+              <AppLogo size="xs" :clickable="false" :show-text="false" />
+              <h3
+                class="text-sm font-semibold text-slate-100 group-hover:text-blue-400 transition-colors truncate"
+              >
+                {{ poli.name }}
+              </h3>
+            </div>
             <Badge
               :variant="poli.activeDoctorsCount > 0 ? 'success' : 'default'"
               size="sm"
+              class="shrink-0"
             >
               {{ poli.activeDoctorsCount }} Dokter Aktif
             </Badge>
@@ -640,11 +644,14 @@ onMounted(() => {
       <div
         class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-900/50 border border-slate-800/80 rounded-xl p-3.5 text-xs"
       >
-        <div class="flex items-center gap-2">
-          <span class="text-slate-400">Poli Terpilih:</span>
-          <span class="font-semibold text-slate-100">{{
-            selectedPoli?.name
-          }}</span>
+        <div class="flex items-center gap-2.5">
+          <AppLogo size="xs" :clickable="false" :show-text="false" />
+          <div>
+            <span class="text-slate-400 mr-1.5">Poli Terpilih:</span>
+            <span class="font-semibold text-slate-100">{{
+              selectedPoli?.name
+            }}</span>
+          </div>
         </div>
         <Button
           size="sm"

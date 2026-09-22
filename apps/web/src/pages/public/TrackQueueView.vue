@@ -13,6 +13,7 @@ import StatusBadge, {
 import Skeleton from "../../components/ui/Skeleton.vue";
 import EmptyState from "../../components/ui/EmptyState.vue";
 import Alert from "../../components/ui/Alert.vue";
+import AppLogo from "../../components/ui/AppLogo.vue";
 import QueueTicketModal from "../../components/queue/QueueTicketModal.vue";
 import type { QueueTicketDownloadData } from "../../utils/downloadTicket";
 
@@ -475,15 +476,18 @@ watch(
         <div
           class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-4"
         >
-          <div>
-            <span
-              class="text-[10px] font-bold uppercase tracking-wider text-slate-400"
-            >
-              HASIL PELACAKAN STATUS
-            </span>
-            <h2 class="text-base font-bold text-slate-100 mt-0.5">
-              {{ searchResult.poliName }}
-            </h2>
+          <div class="flex items-center gap-3">
+            <AppLogo size="sm" :clickable="false" :show-text="false" />
+            <div>
+              <span
+                class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono"
+              >
+                HASIL PELACAKAN STATUS
+              </span>
+              <h2 class="text-base font-bold text-slate-100 mt-0.5">
+                {{ searchResult.poliName }}
+              </h2>
+            </div>
           </div>
 
           <div class="flex items-center gap-2.5">

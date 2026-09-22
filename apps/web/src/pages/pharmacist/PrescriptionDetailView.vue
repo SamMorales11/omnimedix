@@ -719,7 +719,7 @@ onMounted(() => {
               </p>
             </div>
 
-            <div class="flex items-center gap-2.5">
+            <div class="flex flex-wrap items-center gap-2.5">
               <Button
                 variant="primary"
                 size="md"
@@ -771,7 +771,7 @@ onMounted(() => {
               </p>
             </div>
 
-            <div class="flex items-center gap-2.5">
+            <div class="flex flex-wrap items-center gap-2.5">
               <Button
                 variant="ghost"
                 size="sm"
@@ -823,7 +823,7 @@ onMounted(() => {
               </p>
             </div>
 
-            <div class="flex items-center gap-2.5">
+            <div class="flex flex-wrap items-center gap-2.5">
               <Button
                 variant="ghost"
                 size="sm"

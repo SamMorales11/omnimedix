@@ -7,6 +7,7 @@ import Button from "../../components/ui/Button.vue";
 import Input from "../../components/ui/Input.vue";
 import Alert from "../../components/ui/Alert.vue";
 import Badge from "../../components/ui/Badge.vue";
+import AppLogo from "../../components/ui/AppLogo.vue";
 import { Role } from "@omnimedix/shared";
 
 const router = useRouter();
@@ -19,6 +20,9 @@ const showPassword = ref(false);
 const emailError = ref("");
 const passwordError = ref("");
 const selectedDemoRole = ref<Role | null>(null);
+
+// Akun uji coba hanya ditampilkan pada environment development
+const isDev = import.meta.env.DEV;
 
 function validate(): boolean {
   emailError.value = "";
@@ -127,14 +131,17 @@ function selectDemo(demo: DemoAccount) {
 <template>
   <AuthLayout>
     <div class="space-y-6">
-      <!-- Header Form -->
-      <div class="space-y-1">
-        <h2 class="text-lg font-bold text-slate-100 tracking-tight">
-          Masuk Portal Medis
-        </h2>
-        <p class="text-xs text-slate-400 leading-normal">
-          Gunakan akun terdaftar untuk mengakses rekam medis dan antrean pasien.
-        </p>
+      <!-- Header Form with Official Omnimedix Logo -->
+      <div class="flex items-center gap-3.5">
+        <AppLogo size="sm" :clickable="false" :show-text="false" />
+        <div class="space-y-0.5">
+          <h2 class="text-lg font-bold text-slate-100 tracking-tight">
+            Masuk Portal Medis
+          </h2>
+          <p class="text-xs text-slate-400 leading-normal">
+            Gunakan akun terdaftar untuk mengakses rekam medis dan antrean pasien.
+          </p>
+        </div>
       </div>
 
       <!-- Alert Error State (Soft, Informatif, Tidak Mengganggu) -->
@@ -242,8 +249,8 @@ function selectDemo(demo: DemoAccount) {
         </Button>
       </form>
 
-      <!-- Petunjuk Singkat & Preset Demo Cepat (Bersih & Rapi) -->
-      <div class="pt-4 border-t border-slate-800/70 space-y-2.5">
+      <!-- Petunjuk Singkat & Preset Demo Cepat (Hanya muncul saat mode development) -->
+      <div v-if="isDev" class="pt-4 border-t border-slate-800/70 space-y-2.5">
         <div class="flex items-center justify-between">
           <span
             class="text-[11px] font-medium text-slate-400 uppercase tracking-wider"
