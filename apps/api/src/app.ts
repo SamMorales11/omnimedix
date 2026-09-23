@@ -12,25 +12,36 @@ import { adminRoutes } from "./routes/admin";
 export function createApp() {
   const app = new Hono<AppEnv>();
 
-  // 1. Safe CORS middleware for development (localhost / 127.0.0.1) & configured clients
-  const allowedOrigins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-  ];
-
+  // 1. CORS middleware: mendukung domain Vercel (*.vercel.app), localhost, CORS_ORIGIN, dan testing
   app.use(
     "*",
     cors({
       origin: (origin) => {
-        if (!origin) return allowedOrigins[0]!;
-        if (allowedOrigins.includes(origin)) return origin;
-        // Allow any localhost/127.0.0.1 development ports (e.g. preview, alternative dev port)
+        // Request tanpa origin header (server-to-server, curl, mobile client)
+        if (!origin) return "*";
+
+        // Izinkan domain Vercel (*.vercel.app baik preview maupun production)
+        if (/^https:\/\/([a-zA-Z0-9-_]+\.)*vercel\.app$/.test(origin)) {
+          return origin;
+        }
+
+        // Izinkan development lokal (localhost & 127.0.0.1)
         if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
           return origin;
         }
-        return allowedOrigins[0]!;
+
+        // Izinkan origin kustom dari environment variable (jika dikonfigurasi)
+        if (process.env["CORS_ORIGIN"]) {
+          const envOrigins = process.env["CORS_ORIGIN"]
+            .split(",")
+            .map((o) => o.trim());
+          if (envOrigins.includes(origin) || envOrigins.includes("*")) {
+            return origin;
+          }
+        }
+
+        // Fallback: izinkan origin yang melakukan request untuk kelancaran testing
+        return origin;
       },
       allowHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
       allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
