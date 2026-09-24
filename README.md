@@ -2,6 +2,8 @@
 
 Sistem Informasi & Manajemen Pelayanan Medis Terpadu (**Hospital & Clinic Management System**) yang modern, ringan, dan cepat. Dirancang untuk mendigitalisasi alur pelayanan kesehatan mulai dari pendaftaran antrean mandiri oleh pasien, rekam medis dan e-resep oleh dokter, dispensing obat oleh farmasi, hingga pemantauan operasional oleh administrator.
 
+<img width="1564" height="900" alt="omnimedix" src="https://github.com/user-attachments/assets/612a757d-7474-4505-9439-fdb949c26d1b" />
+
 ---
 
 ## 🚀 Tech Stack
